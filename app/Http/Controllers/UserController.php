@@ -27,7 +27,22 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'institution_id' => 'required',
+            'username' => 'required|unique:users',
+            'birthdate' => 'nullable',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+            'role' => 'required',
+        ]);
+
+        $user = User::create($request->all());
+
+        $user->assignRole($request->role);
+
+        return response()->json($user);
     }
 
     /**
@@ -52,7 +67,11 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        $user->update($request->all());
+
+        return response()->json($user);
     }
 
     /**
@@ -63,6 +82,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return response()->json('User deleted');
     }
 }

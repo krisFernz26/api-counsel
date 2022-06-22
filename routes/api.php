@@ -1,8 +1,12 @@
 <?php
 
+use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\AppointmentStatusController;
+use App\Http\Controllers\CounselorScheduleController;
 use App\Http\Controllers\InstitutionController;
+use App\Http\Controllers\NoteController;
+use App\Http\Controllers\TokenController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,8 +20,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/token/generate', [TokenController::class, 'generate']);
 
-Route::resources([
-    'users' => UserController::class,
-    'institutions' => InstitutionController::class,
-]);
+Route::middleware(['auth:sanctum'])->group (function () {
+    Route::resources([
+        'users' => UserController::class,
+        'institutions' => InstitutionController::class,
+        'notes' => NoteController::class,
+        'appointments' => AppointmentController::class,
+        'schedules' => CounselorScheduleController::class,
+        'statuses' => AppointmentStatusController::class
+    ]);
+});

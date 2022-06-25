@@ -40,7 +40,7 @@ class InstitutionController extends Controller
             'attachments' => 'nullable'
         ]);
 
-        $institution = Institution::create([
+        $institution = new Institution([
             'name' => $data['name'],
             'address' => $data['address'],
             'contact_no' => $data['contact_no'] ?? null,
@@ -50,6 +50,8 @@ class InstitutionController extends Controller
         ]);
 
         $this->authorize('store', [$institution]);
+
+        $institution->save();
 
         // Spatie Media Library
         if($request->hasFile('logo')) {

@@ -8,6 +8,8 @@ use App\Http\Controllers\InstitutionController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\UserController;
+use App\Models\AppointmentStatus;
+use App\Models\CounselorSchedule;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,12 +33,15 @@ Route::middleware(['auth:sanctum'])->group (function () {
 
     Route::resource('users', UserController::class, ['except' => ['store', 'update']]);
     Route::resource('institutions', InstitutionController::class, ['except' => ['index', 'show', 'update']]);
-    Route::resources([
-        'notes' => NoteController::class,
-        'appointments' => AppointmentController::class,
-        'schedules' => CounselorScheduleController::class,
-        'statuses' => AppointmentStatusController::class
-    ]);
+
+    Route::prefix('users/{id}')->group(function () {
+        Route::resource('notes', [NoteController::class]);
+        Route::resource('appointments', [AppointmentController::class]);
+        Route::resource('schedules', [CounselorSchedule::class]);
+    });
+
+    Route::resource('statuses', [AppointmentStatus::class]);
+
     Route::get('/institutions', [InstitutionController::class, 'index']);
     Route::get('/institutions/{id}', [InstitutionController::class, 'show']);
     Route::post('/institutions/{id}', [InstitutionController::class, 'update']);

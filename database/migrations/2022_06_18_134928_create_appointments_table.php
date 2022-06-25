@@ -15,7 +15,18 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('appointment_status_id');
+            $table->foreign('appointment_status_id')->references('id')->on('appointment_statuses');
+            $table->unsignedBigInteger('student_id');
+            $table->foreign('student_id')->references('id')->on('users');
+            $table->unsignedBigInteger('counselor_id');
+            $table->foreign('counselor_id')->references('id')->on('users');
+            $table->string('link');
+            $table->date('date');
+            $table->time('start_time');
+            $table->time('end_time');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

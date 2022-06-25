@@ -2,10 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Permission;
-use App\Models\Role;
-use Carbon\Carbon;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,5 +16,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\Institution::factory(10)->create();
         \App\Models\User::factory(50)->create();
         \App\Models\Note::factory(60)->create();
+        \App\Models\AppointmentStatus::factory(3)->create();
+        \App\Models\Appointment::factory(20)->create();
     }
 }

@@ -69,6 +69,8 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
+        $this->authorize('update');
+
         $user->update($request->all());
 
         return response()->json($user);
@@ -83,6 +85,9 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::findOrFail($id);
+
+        $this->authorize('delete');
+
         $user->delete();
 
         return response()->json('User deleted');

@@ -2,12 +2,12 @@
 
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AppointmentStatusController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CounselorScheduleController;
 use App\Http\Controllers\InstitutionController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\ValidationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,17 +23,24 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/token/generate', [TokenController::class, 'generate']);
 
+Route::post('/users', [UserController::class, 'store']);
+Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware(['auth:sanctum'])->group (function () {
-    Route::get('/user/validate', [ValidationController::class, 'validateUser']);
-    Route::resource('users', UserController::class, ['except' => ['store']]);
-    Route::resource('institutions', InstitutionController::class, ['except' => ['index', 'show']]);
+    Route::post('/users/{id}', [UserController::class, 'update']);
+
+    Route::resource('users', UserController::class, ['except' => ['store', 'update']]);
+    Route::resource('institutions', InstitutionController::class, ['except' => ['index', 'show', 'update']]);
     Route::resources([
         'notes' => NoteController::class,
         'appointments' => AppointmentController::class,
         'schedules' => CounselorScheduleController::class,
         'statuses' => AppointmentStatusController::class
     ]);
-});
+    Route::get('/institutions', [InstitutionController::class, 'index']);
+    Route::get('/institutions/{id}', [InstitutionController::class, 'show']);
+    Route::post('/institutions/{id}', [InstitutionController::class, 'update']);
 
-Route::post('/users', [UserController::class, 'store']);
+
+    Route::post('/logout', [AuthController::class, 'logout']);
+});

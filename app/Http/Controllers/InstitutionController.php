@@ -14,7 +14,9 @@ class InstitutionController extends Controller
      */
     public function index()
     {
-        $institutions = Institution::orderBy('created_at', 'DESC')->paginate();
+        $institutions = Institution::orderBy('created_at', 'DESC')->cursorPaginate(15);
+        
+        $institutions->load('media', 'users');
 
         return response()->json($institutions);
     }
@@ -27,7 +29,41 @@ class InstitutionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|unique:institutions',
+            'address' => 'nullable',
+            'contact_no' => 'nullable',
+            'contact_email' => 'nullable',
+            'contact_person_name' => 'nullable',
+            'contact_person_no' => 'nullable',
+            'logo' => 'nullable',
+            'attachments' => 'nullable'
+        ]);
+
+        $institution = Institution::create([
+            'name' => $data['name'],
+            'address' => $data['address'],
+            'contact_no' => $data['contact_no'] ?? null,
+            'contact_email' => $data['contact_email'] ?? null,
+            'contact_person_name' => $data['contact_person_name'] ?? null,
+            'contact_person_no' => $data['contact_person_no'] ?? null,
+        ]);
+
+        $this->authorize('store', [$institution]);
+
+        // Spatie Media Library
+        if($request->hasFile('logo')) {
+            $institution->addMediaFromRequest('logo')->toMediaCollection('logo');
+        }
+        if($request->hasFile('attachments')) {
+            foreach($request->attachments as $attachment) {
+                $institution->addMedia($attachment)->toMediaCollection('attachments');
+            }
+        }
+
+        $institution->load('users', 'media');
+        
+        return response()->json($institution);
     }
 
     /**
@@ -39,6 +75,8 @@ class InstitutionController extends Controller
     public function show($id)
     {
         $institution = Institution::findOrFail($id);
+
+        $institution->load('users', 'media');
 
         return response()->json($institution);
     }
@@ -52,7 +90,36 @@ class InstitutionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->validate([
+            'name' => 'nullable',
+            'address' => 'nullable',
+            'contact_no' => 'nullable',
+            'contact_email' => 'nullable',
+            'contact_person_name' => 'nullable',
+            'contact_person_no' => 'nullable',
+            'logo' => 'nullable',
+            'attachments' => 'nullable'
+        ]);
+
+        $institution = Institution::findOrFail($id);
+
+        $this->authorize('update', [$institution]);
+
+        $institution->update($request->all());
+
+        // Spatie Media Library
+        if($request->hasFile('logo')) {
+            $institution->addMediaFromRequest('logo')->toMediaCollection('logo');
+        }
+        if($request->hasFile('attachments')) {
+            foreach($request->attachments as $attachment) {
+                $institution->addMedia($attachment)->toMediaCollection('attachments');
+            }
+        }
+
+        $institution->load('users', 'media');
+
+        return response()->json($institution);
     }
 
     /**
@@ -63,6 +130,12 @@ class InstitutionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $institution = Institution::findOrFail($id);
+
+        $this->authorize('delete', [$institution]);
+
+        $institution->delete();
+
+        return response()->json('Institution deleted');
     }
 }

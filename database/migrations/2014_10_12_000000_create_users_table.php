@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Institution;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -38,5 +40,15 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('users');
+    }
+    
+    /**
+     * Get the institution that owns the 2014_10_12_000000_create_users_table
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function institution(): BelongsTo
+    {
+        return $this->belongsTo(Institution::class);
     }
 };

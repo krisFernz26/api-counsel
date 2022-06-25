@@ -1,15 +1,13 @@
 <?php
 
-use App\Http\Controllers\AppointmentController;
-use App\Http\Controllers\AppointmentStatusController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CounselorScheduleController;
 use App\Http\Controllers\InstitutionController;
-use App\Http\Controllers\NoteController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\UserController;
-use App\Models\AppointmentStatus;
-use App\Models\CounselorSchedule;
+use App\Http\Controllers\NoteController;
+use App\Http\Controllers\CounselorScheduleController;
+use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\AppointmentStatusController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,12 +33,15 @@ Route::middleware(['auth:sanctum'])->group (function () {
     Route::resource('institutions', InstitutionController::class, ['except' => ['index', 'show', 'update']]);
 
     Route::prefix('users/{id}')->group(function () {
-        Route::resource('notes', [NoteController::class]);
-        Route::resource('appointments', [AppointmentController::class]);
-        Route::resource('schedules', [CounselorSchedule::class]);
+        Route::resource('notes', NoteController::class);
+        Route::resource('appointments', AppointmentController::class);
+        Route::resource('schedules', CounselorScheduleController::class);
     });
-
-    Route::resource('statuses', [AppointmentStatus::class]);
+    
+    // Route::resource('notes', NoteController::class);
+    // Route::resource('appointments', AppointmentController::class);
+    // Route::resource('schedules', CounselorScheduleController::class);
+    Route::resource('statuses', AppointmentStatusController::class);
 
     Route::get('/institutions', [InstitutionController::class, 'index']);
     Route::get('/institutions/{id}', [InstitutionController::class, 'show']);

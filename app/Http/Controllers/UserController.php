@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -46,8 +48,8 @@ class UserController extends Controller
         $user = User::create([
             'institution_id' => $data['institution_id'],
             'username' => strip_tags($data['username']),
-            'birthdate' => strip_tags($data['birthdate']) ?? null,
-            'address' => strip_tags($data['address']) ?? null,
+            'birthdate' => Carbon::now() ?? null,
+            'address' => strip_tags($request->address) ?? null,
             'first_name' => strip_tags($data['first_name']),
             'last_name' => strip_tags($data['last_name']),
             'email' => $data['email'],

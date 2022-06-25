@@ -55,6 +55,8 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
+        $this->authorize('show', [$user]);
+
         return response()->json($user);
     }
 
@@ -69,7 +71,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        $this->authorize('update');
+        $this->authorize('update', [$user]);
 
         $user->update($request->all());
 
@@ -86,7 +88,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        $this->authorize('delete');
+        $this->authorize('delete', [$user]);
 
         $user->delete();
 

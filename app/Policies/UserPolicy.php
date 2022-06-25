@@ -19,6 +19,12 @@ class UserPolicy
         //
     }
 
+    public function show(User $currentUser, User $user)
+    {
+        // dd($currentUser);
+        return $currentUser->id === $user->id || $currentUser->hasRole('admin');
+    }
+
     public function update(User $currentUser, User $user)
     {
         return $currentUser->id === $user->id || $currentUser->hasRole('admin');

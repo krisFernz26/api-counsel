@@ -23,10 +23,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/token/generate', [TokenController::class, 'generate']);
 
-Route::middleware(['auth:sanctum', 'valid'])->group (function () {
+
+Route::middleware(['auth:sanctum'])->group (function () {
     Route::get('/user/validate', [ValidationController::class, 'validateUser']);
     Route::resource('users', UserController::class, ['except' => ['store']]);
-    Route::resource('institutions', InstitutionController::class, ['except' => ['index']]);
+    Route::resource('institutions', InstitutionController::class, ['except' => ['index', 'show']]);
     Route::resources([
         'notes' => NoteController::class,
         'appointments' => AppointmentController::class,
@@ -34,3 +35,5 @@ Route::middleware(['auth:sanctum', 'valid'])->group (function () {
         'statuses' => AppointmentStatusController::class
     ]);
 });
+
+Route::post('/users', [UserController::class, 'store']);

@@ -17,7 +17,7 @@ class NoteController extends Controller
     {
         $user = User::findOrFail($id);
         
-        $notes = $user->counselorNotes()->cursorPaginate(15);
+        $notes = $user->studentNotes()->cursorPaginate(15);
 
         $this->authorize('index', $notes);
 

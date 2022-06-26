@@ -19,7 +19,7 @@ class UserController extends Controller
     {
         $users = User::orderBy('created_at', 'DESC')->cursorPaginate(15);
 
-        $users->load('institution', 'roles', 'media');
+        $users->load(['counselorNotes', 'studentNotes', 'counselorAppointments', 'studentAppointments']);
 
         return response()->json($users);
     }
@@ -46,14 +46,14 @@ class UserController extends Controller
         ]);
 
         $user = User::create([
-            'institution_id' => $data['institution_id'],
-            'username' => strip_tags($data['username']),
+            'institution_id' => $request->institution_id,
+            'username' => strip_tags($request->username),
             'birthdate' => Carbon::now() ?? null,
             'address' => strip_tags($request->address) ?? null,
-            'first_name' => strip_tags($data['first_name']),
-            'last_name' => strip_tags($data['last_name']),
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'first_name' => strip_tags($request->first_name),
+            'last_name' => strip_tags($request->last_name),
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
         ]);
 
         // Spatie Media Library
@@ -64,8 +64,6 @@ class UserController extends Controller
         $token = $user->createToken('apiToken')->plainTextToken;
 
         $user->assignRole($request->role);
-
-        $user->load('institution');
 
         $res = [
             'token' => $token,
@@ -87,7 +85,7 @@ class UserController extends Controller
 
         $this->authorize('show', [$user]);
 
-        $user->load('institution', 'roles', 'media');
+        $user->load(['counselorNotes', 'studentNotes', 'counselorAppointments', 'studentAppointments']);
 
         return response()->json($user);
     }
@@ -112,7 +110,7 @@ class UserController extends Controller
             $user->addMediaFromRequest('attachment')->toMediaCollection('profile_pic');
         }
 
-        $user->load('institution', 'roles', 'media');
+        $user->load(['counselorNotes', 'studentNotes', 'counselorAppointments', 'studentAppointments']);
 
         return response()->json($user);
     }

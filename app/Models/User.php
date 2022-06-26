@@ -15,6 +15,8 @@ class User extends Authenticatable implements HasMedia
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles, InteractsWithMedia;
 
+    protected $with = ['roles', 'media', 'institution'];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -82,5 +84,25 @@ class User extends Authenticatable implements HasMedia
     public function studentNotes(): HasMany
     {
         return $this->hasMany(Note::class, 'student_id', 'id');
+    }
+
+    /**
+     * Get all of the appointments for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function studentAppointments(): HasMany
+    {
+        return $this->hasMany(Appointment::class, 'student_id', 'id');
+    }
+
+    /**
+     * Get all of the counselorAppointments for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function counselorAppointments(): HasMany
+    {
+        return $this->hasMany(Appointment::class, 'counselor_id', 'id');
     }
 }

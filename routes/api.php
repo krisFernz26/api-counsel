@@ -34,10 +34,9 @@ Route::middleware(['auth:sanctum'])->group (function () {
 
     Route::prefix('users/{id}')->group(function () {
         Route::resource('notes', NoteController::class);
-        Route::resource('appointments', AppointmentController::class);
-        Route::resource('schedules', CounselorScheduleController::class);
     });
-    
+    Route::resource('appointments', AppointmentController::class);
+    Route::resource('schedules', CounselorScheduleController::class);
     Route::resource('statuses', AppointmentStatusController::class);
 
     Route::get('/institutions', [InstitutionController::class, 'index']);

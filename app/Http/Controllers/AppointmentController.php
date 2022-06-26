@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appointment;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
@@ -13,17 +15,23 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $user = auth()->user();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        if($user->hasRole('student')) {
+            $appointments = $user->studentAppointments()->cursorPaginate(15);
+        } elseif ($user->hasRole('counselor')) {
+            $appointments = $user->counselorAppointments()->cursorPaginate(15);
+        } elseif ($user->hasRole('admin')) {
+            $appointments = Appointment::orderBy('created_at', 'DESC')->cursorPaginate(15);
+        } else {
+            abort(403);
+        }
+
+        $this->authorize('index', $appointments);
+        
+        // $appointments = Appointment::where('student_id', '=', $user->id)->orWhere('counselor_id', '=', $user->id)->cursorPaginate(15);
+
+        return response($appointments, 200);
     }
 
     /**
@@ -34,7 +42,30 @@ class AppointmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'student_id' => 'required',
+            'counselor_id' => 'required',
+            'link' => 'required',
+            'date' => 'required|date',
+            'start_time' => 'required|date',
+            'end_time'=> 'nullable|date_format:H:i'
+        ]);
+
+        $appointment = new Appointment([
+            'appointment_status_id' => 1,
+            'student_id' => $request->student_id,
+            'counselor_id' => $request->counselor_id,
+            'link' => $request->link,
+            'date' => $request->date,
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time ?? null,
+        ]);
+
+        $this->authorize('store', $appointment);
+
+        $appointment->save();
+
+        return response($appointment, 201);
     }
 
     /**
@@ -44,17 +75,6 @@ class AppointmentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
     {
         //
     }

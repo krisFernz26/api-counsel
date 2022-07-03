@@ -21,8 +21,8 @@ class AppointmentFactory extends Factory
     {
         return [
             'appointment_status_id' => AppointmentStatus::all()->random()->id,
-            'student_id' => User::all()->random()->id,
-            'counselor_id' => User::all()->random()->id,
+            'student_id' => User::where('role_id', '=', '3')->get()->random()->id,
+            'counselor_id' => User::where('role_id', '=', '2')->get()->random()->id,
             'date' => $this->faker->date(),
             'start_time' => $this->faker->time(),
             'end_time' => $this->faker->time(),

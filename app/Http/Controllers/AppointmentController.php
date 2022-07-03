@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
@@ -16,7 +15,6 @@ class AppointmentController extends Controller
     public function index()
     {
         $user = auth()->user();
-
         if($user->checkRole(3)) {
             $appointments = $user->studentAppointments()->cursorPaginate(15);
         } elseif ($user->checkRole(1)) {
@@ -27,7 +25,7 @@ class AppointmentController extends Controller
             abort(403);
         }
 
-        $this->authorize('index', $appointments);
+        // $this->authorize('index', $appointments);
         
         // $appointments = Appointment::where('student_id', '=', $user->id)->orWhere('counselor_id', '=', $user->id)->cursorPaginate(15);
 

@@ -68,7 +68,7 @@ class User extends Authenticatable implements HasMedia
 
     public function checkRole($roleId)
     {
-        return in_array($this->role_id, $roleId);
+        return $this->role_id === $roleId;
     }
 
     /**

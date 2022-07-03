@@ -22,6 +22,7 @@ class AppointmentPolicy
 
     public function index(User $user, Appointment $appointment)
     {
+        dd($user);
         return $user->checkRole(0) 
             || ($user->checkRole(2) && $appointment->counselor_id === $user->id) 
             || ($user->checkRole(3) && $appointment->student_id === $user->id);

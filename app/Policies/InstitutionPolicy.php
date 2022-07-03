@@ -22,16 +22,16 @@ class InstitutionPolicy
 
     public function store(User $user, Institution $institution)
     {
-        return $user->hasRole('admin') || ($user->hasRole('institution') && $user->institution_id === $institution->id);
+        return $user->checkRole(0) || ($user->checkRole(1) && $user->institution_id === $institution->id);
     }
 
     public function update(User $user, Institution $institution)
     {
-        return $user->hasRole('admin') || ($user->hasRole('institution') && $user->institution_id === $institution->id);
+        return $user->checkRole(0) || ($user->checkRole(1) && $user->institution_id === $institution->id);
     }
 
     public function delete(User $user, Institution $institution)
     {
-        return $user->hasRole('admin') || ($user->hasRole('institution') && $user->institution_id === $institution->id);
+        return $user->checkRole(0) || ($user->checkRole(1) && $user->institution_id === $institution->id);
     }
 }

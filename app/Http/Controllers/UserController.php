@@ -42,10 +42,11 @@ class UserController extends Controller
             'email' => 'required|unique:users|email',
             'password' => 'required',
             'attachment' => 'nullable',
-            'role' => 'required',
+            'role_id' => 'required',
         ]);
 
         $user = User::create([
+            'role_id' => $request->role_id,
             'institution_id' => $request->institution_id,
             'username' => strip_tags($request->username),
             'birthdate' => Carbon::now() ?? null,
@@ -62,8 +63,6 @@ class UserController extends Controller
         }
 
         $token = $user->createToken('apiToken')->plainTextToken;
-
-        $user->assignRole($request->role);
 
         $res = [
             'token' => $token,

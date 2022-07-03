@@ -19,6 +19,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('institution_id');
             $table->foreign('institution_id')->references('id')->on('institutions');
+            $table->unsignedSmallInteger('role_id'); // 0 - admin; 1 - Institution; 2 - Counselor; 3 - Student
             $table->string('first_name');
             $table->string('last_name');
             $table->text('address')->nullable();

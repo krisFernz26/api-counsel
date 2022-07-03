@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthController extends Controller
 {
@@ -26,11 +27,11 @@ class AuthController extends Controller
 
         $token = $user->createToken('apiToken')->plainTextToken;
 
-        $user->load('roles', 'institution');
+        $user->load('institution');
 
         $res = [
+            'token' => $token,
             'user' => $user,
-            'token' => $token
         ];
 
         return response($res, 201);
@@ -42,5 +43,15 @@ class AuthController extends Controller
         return [
             'message' => 'User logged out'
         ];
+    }
+
+    public function validateToken(Request $request)
+    {
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $data = [
+            'token' => $request->bearerToken(),
+            'user' => $token->tokenable
+        ];
+        return response($data, 200);
     }
 }

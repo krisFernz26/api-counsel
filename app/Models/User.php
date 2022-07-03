@@ -7,15 +7,14 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 class User extends Authenticatable implements HasMedia
 {
-    use HasApiTokens, HasFactory, Notifiable, HasRoles, InteractsWithMedia;
+    use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia;
 
-    protected $with = ['roles', 'media', 'institution'];
+    protected $with = ['media', 'institution'];
 
     /**
      * The attributes that are mass assignable.
@@ -23,6 +22,7 @@ class User extends Authenticatable implements HasMedia
      * @var array<int, string>
      */
     protected $fillable = [
+        'role_id',
         'institution_id',
         'username',
         'birthdate',
@@ -64,6 +64,11 @@ class User extends Authenticatable implements HasMedia
     public function institution()
     {
         return $this->belongsTo(Institution::class);
+    }
+
+    public function checkRole($roleId)
+    {
+        return in_array($this->role_id, $roleId);
     }
 
     /**

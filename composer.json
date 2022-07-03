@@ -12,7 +12,6 @@
         "laravel/sanctum": "^2.15",
         "laravel/tinker": "^2.7",
         "spatie/laravel-medialibrary": "^10.0.0",
-        "spatie/laravel-permission": "^5.5",
         "symfony/psr-http-message-bridge": "^2.1"
     },
     "require-dev": {

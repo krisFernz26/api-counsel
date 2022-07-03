@@ -25,6 +25,7 @@ Route::post('/token/generate', [TokenController::class, 'generate']);
 
 Route::post('/users', [UserController::class, 'store']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/validate', [AuthController::class, 'validateToken']);
 
 Route::middleware(['auth:sanctum'])->group (function () {
     Route::post('/users/{id}', [UserController::class, 'update']);

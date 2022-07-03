@@ -22,28 +22,28 @@ class NotePolicy
 
     public function index(User $user, Note $note)
     {
-         return $user->hasRole('admin') || ($user->hasRole('counselor') && $note->counselor_id === $user->id); 
+         return $user->checkRole(0) || ($user->checkRole(2) && $note->counselor_id === $user->id); 
     }
 
     public function show(User $user, Note $note)
     {
-         return $user->hasRole('admin') || ($user->hasRole('counselor') && $note->counselor_id === $user->id); 
+         return $user->checkRole(0) || ($user->checkRole(2) && $note->counselor_id === $user->id); 
     }
 
     public function store(User $user, Note $note)
     {
-        return $user->hasRole('admin') || $user->hasRole('counselor');
+        return $user->checkRole(0) || $user->checkRole(2);
     }
 
     public function update(User $user, Note $note)
     {
-        return $user->hasRole('admin') || ($user->hasRole('counselor') && $note->counselor_id === $user->id);
+        return $user->checkRole(0) || ($user->checkRole(2) && $note->counselor_id === $user->id);
     }
 
     public function delete(User $user, Note $note)
     {
-        return $user->hasRole('admin') 
-                || ($user->hasRole('counselor') && $note->counselor_id === $user->id) 
-                || ($user->hasRole('institution') && $note->counselor->institution_id === $user->institution_id);
+        return $user->checkRole(0) 
+                || ($user->checkRole(2) && $note->counselor_id === $user->id) 
+                || ($user->checkRole(1) && $note->counselor->institution_id === $user->institution_id);
     }
 }

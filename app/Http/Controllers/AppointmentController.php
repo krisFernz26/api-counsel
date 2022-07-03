@@ -17,11 +17,11 @@ class AppointmentController extends Controller
     {
         $user = auth()->user();
 
-        if($user->hasRole('student')) {
+        if($user->checkRole(3)) {
             $appointments = $user->studentAppointments()->cursorPaginate(15);
-        } elseif ($user->hasRole('counselor')) {
+        } elseif ($user->checkRole(1)) {
             $appointments = $user->counselorAppointments()->cursorPaginate(15);
-        } elseif ($user->hasRole('admin')) {
+        } elseif ($user->checkRole(0)) {
             $appointments = Appointment::orderBy('created_at', 'DESC')->cursorPaginate(15);
         } else {
             abort(403);

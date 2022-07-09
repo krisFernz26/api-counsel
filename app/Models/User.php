@@ -66,9 +66,14 @@ class User extends Authenticatable implements HasMedia
         return $this->belongsTo(Institution::class);
     }
 
-    public function checkRole($roleId)
+    // public function checkRole($roleId)
+    // {
+    //     return $this->role_id === $roleId;
+    // }
+
+    public function role()
     {
-        return $this->role_id === $roleId;
+        return $this->belongsTo(Role::class);
     }
 
     /**

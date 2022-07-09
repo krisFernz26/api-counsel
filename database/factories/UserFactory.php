@@ -21,7 +21,7 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'role_id' => random_int(0, 3), 
+            'role_id' => Role::all()->random()->id, 
             'first_name' => $this->faker->firstName(),
             'last_name' => $this->faker->lastName(),
             'address' => $this->faker->address(),

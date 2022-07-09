@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/token/generate', [TokenController::class, 'generate']);
 
-Route::post('/users', [UserController::class, 'store']);
+Route::post('/register', [UserController::class, 'store']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/validate', [AuthController::class, 'validateToken']);
 
@@ -31,7 +31,12 @@ Route::middleware(['auth:sanctum'])->group (function () {
     Route::post('/users/{id}', [UserController::class, 'update']);
 
     Route::resource('users', UserController::class, ['except' => ['store', 'update']]);
+
     Route::resource('institutions', InstitutionController::class, ['except' => ['index', 'show', 'update', 'approve']]);
+    Route::get('/institutions', [InstitutionController::class, 'index']);
+    Route::get('/institutions/{id}', [InstitutionController::class, 'show']);
+    Route::post('/institutions/{id}', [InstitutionController::class, 'update']);
+    Route::put('/institutions/{id}/approve', [InstitutionController::class, 'approve']);
 
     Route::get('notes', [NoteController::class, 'index']);
     Route::post('notes', [NoteController::class, 'store']);
@@ -47,10 +52,6 @@ Route::middleware(['auth:sanctum'])->group (function () {
     Route::resource('schedules', CounselorScheduleController::class);
     Route::resource('statuses', AppointmentStatusController::class);
 
-    Route::get('/institutions', [InstitutionController::class, 'index']);
-    Route::get('/institutions/{id}', [InstitutionController::class, 'show']);
-    Route::post('/institutions/{id}', [InstitutionController::class, 'update']);
-    Route::put('/institutions/{id}/approve', [InstitutionController::class, 'approve']);
 
 
     Route::post('/logout', [AuthController::class, 'logout']);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Note;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class NoteController extends Controller
@@ -152,7 +153,9 @@ class NoteController extends Controller
 
         $this->authorize('update', $note);
 
-        $note->update($request->all());
+        $note->update([
+            'body' => strip_tags($request->body) . ' (Edited @ '. Carbon::now()->format('Y-m-d H:i:s') . ')' ?? $note->body
+        ]);
 
         $note->load('counselor', 'student');
 

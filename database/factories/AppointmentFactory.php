@@ -27,8 +27,8 @@ class AppointmentFactory extends Factory
             'start_time' => $this->faker->time(),
             'end_time' => $this->faker->time(),
             'link' => $this->faker->url(),
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ];
     }
 }

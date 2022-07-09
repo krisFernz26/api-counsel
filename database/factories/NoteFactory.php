@@ -21,8 +21,8 @@ class NoteFactory extends Factory
         return [
             'student_id' => User::where('role_id', 4)->get()->random()->id,
             'counselor_id' => User::where('role_id', 3)->get()->random()->id,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
+            'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+            'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'subject' => $this->faker->sentence(),
             'body' => $this->faker->paragraph(),
         ];

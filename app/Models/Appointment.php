@@ -11,7 +11,7 @@ class Appointment extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $with = ['student', 'counselor'];
+    protected $with = ['student:id,institution_id,last_name,first_name,username', 'counselor:id,institution_id,last_name,first_name,username'];
 
     protected $fillable = [
         'appointment_status_id',
@@ -21,6 +21,10 @@ class Appointment extends Model
         'date',
         'start_time',
         'end_time'
+    ];
+
+    protected $hidden = [
+        'deleted_at'
     ];
 
     /**

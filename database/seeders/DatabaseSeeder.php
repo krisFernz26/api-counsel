@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
         \App\Models\Institution::factory(10)->create();
         \App\Models\User::factory(50)->create();
         \App\Models\Note::factory(60)->create();
-        \App\Models\AppointmentStatus::factory(3)->create();
         \App\Models\Appointment::factory(20)->create();
     }
 }

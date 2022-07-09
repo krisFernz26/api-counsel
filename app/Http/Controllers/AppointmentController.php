@@ -14,20 +14,12 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
-        if($user->isStudent()) {
-            $appointments = $user->studentAppointments()->cursorPaginate(15);
-        } elseif ($user->isCounselor()) {
-            $appointments = $user->counselorAppointments()->cursorPaginate(15);
-        } elseif ($user->isAdmin()) {
-            $appointments = Appointment::orderBy('created_at', 'DESC')->cursorPaginate(15);
-        } else {
-            abort(403);
-        }
+        $appointments = Appointment::orderBy('created_at', 'DESC')->cursorPaginate(15);
 
-        // $this->authorize('index', $appointments);
+        foreach($appointments as $appointment)
+            $this->authorize('index', $appointment);
         
-        // $appointments = Appointment::where('student_id', '=', $user->id)->orWhere('counselor_id', '=', $user->id)->cursorPaginate(15);
+        $appointments->load(['currentStatus']);
 
         return response($appointments, 200);
     }

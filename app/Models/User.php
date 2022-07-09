@@ -145,18 +145,39 @@ class User extends Authenticatable implements HasMedia
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function studentAppointments(): HasMany
+    public function appointments(): HasMany
     {
-        return $this->hasMany(Appointment::class, 'student_id', 'id');
+        switch($this->role_id)
+        {
+            case 3:
+                return $this->hasMany(Appointment::class, 'counselor_id', 'id');
+                break;
+            case 4:
+                return $this->hasMany(Appointment::class, 'student_id', 'id');
+                break;
+            default:
+                return $this->hasMany(Appointment::class, 'counselor_id', 'id');
+                break;
+        }
     }
+
+    /**
+     * Get all of the appointments for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    // public function studentAppointments(): HasMany
+    // {
+    //     return $this->hasMany(Appointment::class, 'student_id', 'id');
+    // }
 
     /**
      * Get all of the counselorAppointments for the User
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function counselorAppointments(): HasMany
-    {
-        return $this->hasMany(Appointment::class, 'counselor_id', 'id');
-    }
+    // public function counselorAppointments(): HasMany
+    // {
+    //     return $this->hasMany(Appointment::class, 'counselor_id', 'id');
+    // }
 }

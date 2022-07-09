@@ -18,8 +18,7 @@ class NotePolicy
      */
     public function index(User $user, Note $note)
     {
-        return $user->isAdmin() 
-            || ($user->isCounselor() && $note->counselor_id === $user->id);
+        return $user->isAdmin(); 
     }
 
     /**

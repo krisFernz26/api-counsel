@@ -22,9 +22,6 @@ class AppointmentPolicy
 
     public function index(User $user, Appointment $appointment)
     {
-        dd($user);
-        return $user->isAdmin() 
-            || ($user->isCounselor() && $appointment->counselor_id === $user->id) 
-            || ($user->isStudent() && $appointment->student_id === $user->id);
+        return $user->isAdmin(); 
     }
 }

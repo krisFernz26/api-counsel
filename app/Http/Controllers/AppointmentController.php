@@ -14,7 +14,24 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        $appointments = Appointment::orderBy('created_at', 'DESC')->cursorPaginate(15);
+        // $appointments = Appointment::orderBy('date', 'ASC')->orderBy('start_time', 'ASC')->cursorPaginate(15);
+        $appointments = Appointment::orderBy('date', 'DESC')->orderBy('start_time', 'DESC')->cursorPaginate(15);
+
+        foreach($appointments as $appointment)
+            $this->authorize('index', $appointment);
+        
+        return response($appointments, 200);
+    }
+
+    /**
+     * Display a listing of the resource according to user.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getAllAppointmentsOfUser($id)
+    {
+        // $appointments = Appointment::orderBy('date', 'ASC')->orderBy('start_time', 'ASC')->cursorPaginate(15);
+        $appointments = Appointment::where('counselor_id', $id)->orWhere('student_id', $id)->orderBy('date', 'DESC')->orderBy('start_time', 'DESC')->cursorPaginate(15);
 
         foreach($appointments as $appointment)
             $this->authorize('index', $appointment);
@@ -63,7 +80,7 @@ class AppointmentController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**

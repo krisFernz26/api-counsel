@@ -48,7 +48,9 @@ Route::middleware(['auth:sanctum'])->group (function () {
     Route::get('notes/counselor/{counselor_id}', [NoteController::class, 'getAllNotesOfCounselor']);
     Route::get('notes/counselor/{counselor_id}/student/{student_id}', [NoteController::class, 'getNotesOfCounselorOnStudent']);
 
-    Route::resource('appointments', AppointmentController::class);
+    Route::resource('appointments', AppointmentController::class, ['except' => ['getAllAppointmentsOfUser', 'getAllAppointmentsOfStudent', 'getAllAppointmentsOfCounselor']]);
+    Route::get('users/{id}/appointments', [AppointmentController::class, 'getAllAppointmentsOfUser']);
+
     Route::resource('schedules', CounselorScheduleController::class);
     Route::resource('statuses', AppointmentStatusController::class);
 

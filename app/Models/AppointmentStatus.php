@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Appointment;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class AppointmentStatus extends Model
 {
@@ -21,10 +21,10 @@ class AppointmentStatus extends Model
    /**
     * Get the appointment that owns the AppointmentStatus
     *
-    * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    * @return \Illuminate\Database\Eloquent\Relations\hasMany
     */
-   public function appointment(): BelongsTo
+   public function appointments(): HasMany
    {
-       return $this->belongsTo(Appointment::class);
+       return $this->hasMany(Appointment::class);
    }
 }

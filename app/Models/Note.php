@@ -19,6 +19,8 @@ class Note extends Model
     ];
 
     protected $hidden = [
+        'student_id',
+        'counselor_id',
         'deleted_at'
     ];
 

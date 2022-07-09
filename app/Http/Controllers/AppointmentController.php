@@ -19,8 +19,6 @@ class AppointmentController extends Controller
         foreach($appointments as $appointment)
             $this->authorize('index', $appointment);
         
-        $appointments->load(['currentStatus']);
-
         return response($appointments, 200);
     }
 

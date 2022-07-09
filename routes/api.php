@@ -31,7 +31,7 @@ Route::middleware(['auth:sanctum'])->group (function () {
     Route::post('/users/{id}', [UserController::class, 'update']);
 
     Route::resource('users', UserController::class, ['except' => ['store', 'update']]);
-    Route::resource('institutions', InstitutionController::class, ['except' => ['index', 'show', 'update']]);
+    Route::resource('institutions', InstitutionController::class, ['except' => ['index', 'show', 'update', 'approve']]);
 
     Route::get('notes', [NoteController::class, 'index']);
     Route::post('notes', [NoteController::class, 'store']);
@@ -50,6 +50,7 @@ Route::middleware(['auth:sanctum'])->group (function () {
     Route::get('/institutions', [InstitutionController::class, 'index']);
     Route::get('/institutions/{id}', [InstitutionController::class, 'show']);
     Route::post('/institutions/{id}', [InstitutionController::class, 'update']);
+    Route::put('/institutions/{id}/approve', [InstitutionController::class, 'approve']);
 
 
     Route::post('/logout', [AuthController::class, 'logout']);

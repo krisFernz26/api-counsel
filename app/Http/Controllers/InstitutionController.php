@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Institution;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class InstitutionController extends Controller
@@ -135,6 +136,28 @@ class InstitutionController extends Controller
         $institution = Institution::findOrFail($id);
 
         $this->authorize('delete', [$institution]);
+
+        $institution->delete();
+
+        return response()->json('Institution deleted');
+    }
+
+    /**
+     * Approve the specified resource. 
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function approve($id)
+    {
+        $institution = Institution::findOrFail($id);
+
+        $this->authorize('approve', [$institution]);
+
+        $institution->update([
+            'approved_at' => Carbon::now()->format('Y-m-d H:i:s')
+        ]);
+
 
         $institution->delete();
 

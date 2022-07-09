@@ -34,4 +34,9 @@ class InstitutionPolicy
     {
         return $user->isAdmin() || ($user->isInstitution() && $user->institution_id === $institution->id);
     }
+
+    public function approve(User $user, Institution $institution)
+    {
+        return $user->isAdmin();
+    }
 }

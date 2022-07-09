@@ -20,6 +20,7 @@ class Institution extends Model implements HasMedia
     protected $fillable = [
         'name',
         'address',
+        'approved_at',
         'contact_no',
         'contact_email',
         'contact_person_name',

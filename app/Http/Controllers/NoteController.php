@@ -107,6 +107,12 @@ class NoteController extends Controller
             'body' => 'required'
         ]);
 
+        $student = User::findOrFail($request->student_id);
+        if(!$student->isStudent())
+        {
+            return response()->json(['message' => 'User with ID '.$request->student_id.' is not a student!'], 500);
+        }
+
         $note = new Note([
             'student_id' => $request->student_id,
             'counselor_id' => auth()->user()->id,

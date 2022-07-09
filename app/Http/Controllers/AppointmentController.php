@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
@@ -54,6 +55,12 @@ class AppointmentController extends Controller
             'start_time' => 'required|date_format:H:i',
             'end_time'=> 'nullable|date_format:H:i'
         ]);
+
+        $student = User::findOrFail($request->student_id);
+        if(!$student->isStudent())
+        {
+            return response()->json(['message' => 'User with ID '.$request->student_id.' is not a student!'], 500);
+        }
 
         $appointment = new Appointment([
             'appointment_status_id' => 1,

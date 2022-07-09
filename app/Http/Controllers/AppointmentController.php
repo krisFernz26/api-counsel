@@ -32,17 +32,16 @@ class AppointmentController extends Controller
     {
         $request->validate([
             'student_id' => 'required',
-            'counselor_id' => 'required',
             'link' => 'required',
-            'date' => 'required|date',
-            'start_time' => 'required|date',
+            'date' => 'required|date_format:Y-m-d',
+            'start_time' => 'required|date_format:H:i',
             'end_time'=> 'nullable|date_format:H:i'
         ]);
 
         $appointment = new Appointment([
             'appointment_status_id' => 1,
             'student_id' => $request->student_id,
-            'counselor_id' => $request->counselor_id,
+            'counselor_id' => auth()->user()->id,
             'link' => $request->link,
             'date' => $request->date,
             'start_time' => $request->start_time,

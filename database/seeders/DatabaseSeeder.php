@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             RoleSeeder::class,
+            AppointmentStatusSeeder::class,
         ]);
         \App\Models\Institution::factory(10)->create();
         \App\Models\User::factory(50)->create();

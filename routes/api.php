@@ -33,9 +33,15 @@ Route::middleware(['auth:sanctum'])->group (function () {
     Route::resource('users', UserController::class, ['except' => ['store', 'update']]);
     Route::resource('institutions', InstitutionController::class, ['except' => ['index', 'show', 'update']]);
 
-    Route::prefix('users/{id}')->group(function () {
-        Route::resource('notes', NoteController::class);
-    });
+    Route::get('notes', [NoteController::class, 'index']);
+    Route::post('notes', [NoteController::class, 'store']);
+    Route::get('notes/{id}', [NoteController::class, 'show']);
+    Route::get('notes/counselor/{counselor_id}/student/{student_id}', [NoteController::class, 'getNotesOfCounselorOnStudent']);
+    Route::put('notes/{id}', [NoteController::class, 'update']);
+    Route::delete('notes/{id}', [NoteController::class, 'destroy']);
+    Route::get('notes/student/{student_id}', [NoteController::class, 'getAllNotesOnStudent']);
+    Route::get('notes/counselor/{counselor_id}', [NoteController::class, 'getAllNotesOfCounselor']);
+
     Route::resource('appointments', AppointmentController::class);
     Route::resource('schedules', CounselorScheduleController::class);
     Route::resource('statuses', AppointmentStatusController::class);

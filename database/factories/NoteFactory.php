@@ -19,8 +19,8 @@ class NoteFactory extends Factory
     public function definition()
     {
         return [
-            'student_id' => User::all()->random()->id,
-            'counselor_id' => User::all()->random()->id,
+            'student_id' => User::where('role_id', 4)->get()->random()->id,
+            'counselor_id' => User::where('role_id', 3)->get()->random()->id,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
             'subject' => $this->faker->sentence(),

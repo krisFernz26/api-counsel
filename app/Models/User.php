@@ -14,7 +14,7 @@ class User extends Authenticatable implements HasMedia
 {
     use HasApiTokens, HasFactory, Notifiable, InteractsWithMedia;
 
-    protected $with = ['media', 'institution'];
+    protected $with = ['media', 'institution:id,name,address'];
 
     /**
      * The attributes that are mass assignable.
@@ -76,24 +76,45 @@ class User extends Authenticatable implements HasMedia
         return $this->belongsTo(Role::class);
     }
 
+    public function isAdmin()
+    {
+        return $this->role_id == 1;
+    }
+
+    public function isInstitution()
+    {
+        return $this->role_id == 2;
+    }
+
+    public function isCounselor()
+    {
+        return $this->role_id == 3;
+    }
+
+    public function isStudent()
+    {
+        return $this->role_id == 4;
+    }
+
     /**
      * Get all of the notes for the User
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function counselorNotes(): HasMany
-    {
-        return $this->hasMany(Note::class, 'counselor_id', 'id');
-    }
-
-    /**
-     * Get all of the studentNotes for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function studentNotes(): HasMany
-    {
-        return $this->hasMany(Note::class, 'student_id', 'id');
+    public function notes(): HasMany
+    {   
+        switch($this->role_id)
+        {
+            case 3:
+                return $this->hasMany(Note::class, 'counselor_id', 'id');
+                break;
+            case 4:
+                return $this->hasMany(Note::class, 'student_id', 'id');
+                break;
+            default:
+                return $this->hasMany(Note::class, 'counselor_id', 'id');
+                break;
+        }
     }
 
     /**

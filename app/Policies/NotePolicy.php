@@ -10,40 +10,46 @@ class NotePolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * Create a new policy instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
     public function index(User $user, Note $note)
     {
-         return $user->checkRole(0) || ($user->checkRole(2) && $note->counselor_id === $user->id); 
+        return $user->isAdmin() || ($user->isCounselor() && $note->counselor_id === $user->id);
     }
 
+    public function getAllNotesOnStudent(User $user, Note $note)
+    {
+         return $user->isAdmin() || ($user->isInstitution() && $note->student->institution_id == $user->institution_id);
+    }
+
+    public function getAllNotesOfCounselor(User $user, Note $note)
+    {
+         return $user->isAdmin() || ($user->isInstitution() && $note->counselor->institution_id == $user->institution_id) || ($user->isCounselor() && $note->counselor_id === $user->id);
+    }
+
+    public function getNotesOfCounselorOnStudent(User $user, Note $note)
+    {
+         return $user->isAdmin() || ($user->isInstitution() && $note->student->institution_id == $user->institution_id && $note->counselor->institution_id == $user->institution_id) || ($user->isCounselor() && $note->counselor_id === $user->id);
+
+    }
     public function show(User $user, Note $note)
     {
-         return $user->checkRole(0) || ($user->checkRole(2) && $note->counselor_id === $user->id); 
+        // dd($note);
+        return $user->isAdmin() || ($user->isCounselor() && $note->counselor_id === $user->id);
     }
 
     public function store(User $user, Note $note)
     {
-        return $user->checkRole(0) || $user->checkRole(2);
+        return $user->isAdmin() || $user->isCounselor();
     }
 
     public function update(User $user, Note $note)
     {
-        return $user->checkRole(0) || ($user->checkRole(2) && $note->counselor_id === $user->id);
+        return $user->isAdmin() || ($user->isCounselor() && $note->counselor_id === $user->id);
     }
 
     public function delete(User $user, Note $note)
     {
-        return $user->checkRole(0) 
-                || ($user->checkRole(2) && $note->counselor_id === $user->id) 
-                || ($user->checkRole(1) && $note->counselor->institution_id === $user->institution_id);
+        return $user->isAdmin() 
+                || ($user->isCounselor() && $note->counselor_id === $user->id) 
+                || ($user->isInstitution() && $note->counselor->institution_id === $user->institution_id);
     }
 }

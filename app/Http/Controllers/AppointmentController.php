@@ -15,11 +15,11 @@ class AppointmentController extends Controller
     public function index()
     {
         $user = auth()->user();
-        if($user->checkRole(3)) {
+        if($user->isStudent()) {
             $appointments = $user->studentAppointments()->cursorPaginate(15);
-        } elseif ($user->checkRole(1)) {
+        } elseif ($user->isCounselor()) {
             $appointments = $user->counselorAppointments()->cursorPaginate(15);
-        } elseif ($user->checkRole(0)) {
+        } elseif ($user->isAdmin()) {
             $appointments = Appointment::orderBy('created_at', 'DESC')->cursorPaginate(15);
         } else {
             abort(403);

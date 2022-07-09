@@ -19,7 +19,7 @@ class UserController extends Controller
     {
         $users = User::orderBy('created_at', 'DESC')->cursorPaginate(15);
 
-        $users->load(['counselorNotes', 'studentNotes', 'counselorAppointments', 'studentAppointments']);
+        $users->load(['role:id,name', 'notes', 'counselorAppointments', 'studentAppointments']);
 
         return response()->json($users);
     }

@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('appointment_status_id');
-            $table->foreign('appointment_status_id')->references('id')->on('appointment_statuses')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('appointment_status_id')->references('id')->on('appointment_statuses')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('student_id');
-            $table->foreign('student_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('student_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('counselor_id');
-            $table->foreign('counselor_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreign('counselor_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->string('link');
             $table->date('date');
             $table->time('start_time');

@@ -51,6 +51,9 @@ class User extends Authenticatable implements HasMedia
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * Register media collections for user model
+     */
     public function registerMediaCollections(): void
     {
         $this->addMediaCollection('profile_pic')->singleFile();
@@ -66,34 +69,54 @@ class User extends Authenticatable implements HasMedia
         return $this->belongsTo(Institution::class);
     }
 
-    // public function checkRole($roleId)
-    // {
-    //     return $this->role_id === $roleId;
-    // }
-
-    public function role()
-    {
-        return $this->belongsTo(Role::class);
-    }
-
+    /**
+     * Check if User is an admin
+     * 
+     * @return boolean
+     */
     public function isAdmin()
     {
         return $this->role_id == 1;
     }
-
+    
+    /**
+     * Check if User is an institution
+     * 
+     * @return boolean
+     */
     public function isInstitution()
     {
         return $this->role_id == 2;
     }
-
+    
+    /**
+     * Check if User is a counselor
+     * 
+     * @return boolean
+     */
     public function isCounselor()
     {
         return $this->role_id == 3;
     }
-
+    
+    /**
+     * Check if User is a student
+     * 
+     * @return boolean
+     */
     public function isStudent()
     {
         return $this->role_id == 4;
+    }
+
+    /**
+     * Get the Role that owns the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
 
     /**

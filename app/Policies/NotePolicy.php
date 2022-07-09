@@ -116,6 +116,7 @@ class NotePolicy
         return $user->isAdmin() 
             // note's counselor_id is the same as the user's id
             || ($user->isCounselor() && $note->counselor_id === $user->id) 
+            // user's institution is the same as the note counselor's id
             || ($user->isInstitution() && $note->counselor->institution_id === $user->institution_id);
     }
 }

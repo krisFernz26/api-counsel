@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,6 +18,7 @@ class InstitutionFactory extends Factory
     public function definition()
     {
         return [
+            'approved_at' => $this->faker->boolean(50) ? Carbon::now()->format('Y-m-d H:i:s') : null,
             'name' => $this->faker->name(),
             'address' => $this->faker->address(),
             'contact_no' => $this->faker->phoneNumber(),

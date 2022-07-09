@@ -18,7 +18,6 @@ return new class extends Migration
         Schema::create('institutions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->dateTime('approved_at')->nullable();
             $table->text('address')->nullable();
             $table->string('contact_no')->nullable();
             $table->string('contact_email')->nullable();

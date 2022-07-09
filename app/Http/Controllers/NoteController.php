@@ -154,7 +154,7 @@ class NoteController extends Controller
         $this->authorize('update', $note);
 
         $note->update([
-            'body' => strip_tags($request->body) . ' (Edited @ '. Carbon::now()->format('Y-m-d H:i:s') . ')' ?? $note->body
+            'body' => strip_tags($request->body) . ' (Edited on '. Carbon::now()->format('Y-m-d H:i:s') . ')' ?? $note->body
         ]);
 
         $note->load('counselor', 'student');
@@ -176,6 +176,24 @@ class NoteController extends Controller
 
         $note->delete();
 
-        return response()->json('Note deleted');
+        return response()->json(['message' => 'Note deleted'], 201);
+    }
+
+    /**
+     * Restore the deleted resource from trash
+     * 
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $note = Note::withTrashed()->findOrFail($id);
+
+        $this->authorize('restore', $note);
+
+        $note->restore();
+        $note->load(['counselor', 'student']);
+
+        return response()->json(['message' => 'Note was restored.', 'note' => $note], 201);
     }
 }

@@ -119,4 +119,19 @@ class NotePolicy
             // user's institution is the same as the note counselor's id
             || ($user->isInstitution() && $note->counselor->institution_id === $user->institution_id);
     }
+
+    /**
+     * Delete a note 
+     * 
+     * @param User $user
+     * @param Note $note
+     */
+    public function restore(User $user, Note $note)
+    {
+        return $user->isAdmin() 
+            // note's counselor_id is the same as the user's id
+            || ($user->isCounselor() && $note->counselor_id === $user->id) 
+            // user's institution is the same as student's or counselor's instititution
+            || ($user->isInstitution() && ($note->student->institution_id == $user->institution_id || $note->counselor->institution_id == $user->institution_id)); 
+    }
 }

@@ -18,6 +18,10 @@ class Note extends Model
         'body'
     ];
 
+    protected $hidden = [
+        'deleted_at'
+    ];
+
     /**
      * Get the counselor that owns the Note
      *

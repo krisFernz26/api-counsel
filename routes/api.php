@@ -36,11 +36,11 @@ Route::middleware(['auth:sanctum'])->group (function () {
     Route::get('notes', [NoteController::class, 'index']);
     Route::post('notes', [NoteController::class, 'store']);
     Route::get('notes/{id}', [NoteController::class, 'show']);
-    Route::get('notes/counselor/{counselor_id}/student/{student_id}', [NoteController::class, 'getNotesOfCounselorOnStudent']);
     Route::put('notes/{id}', [NoteController::class, 'update']);
     Route::delete('notes/{id}', [NoteController::class, 'destroy']);
     Route::get('notes/student/{student_id}', [NoteController::class, 'getAllNotesOnStudent']);
     Route::get('notes/counselor/{counselor_id}', [NoteController::class, 'getAllNotesOfCounselor']);
+    Route::get('notes/counselor/{counselor_id}/student/{student_id}', [NoteController::class, 'getNotesOfCounselorOnStudent']);
 
     Route::resource('appointments', AppointmentController::class);
     Route::resource('schedules', CounselorScheduleController::class);

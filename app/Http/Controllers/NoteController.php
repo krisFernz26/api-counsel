@@ -29,8 +29,14 @@ class NoteController extends Controller
 
     public function getAllNotesOnStudent($student_id)
     {
-        // $user = auth()->user();
-        // dd($user);
+        $student = User::findOrFail($student_id);
+        
+        // Check if id supplied is for a student user
+        if(!$student->isStudent())
+        {
+            return response()->json(['Error' => 'User for ID '. $student_id .' is not student'], 404);
+        }
+
         $notes = Note::where('student_id', $student_id)->orderBy('created_at', 'DESC')->cursorPaginate(15);
         
         $notes->load('counselor');
@@ -38,13 +44,20 @@ class NoteController extends Controller
         foreach($notes as $note)
             $this->authorize('getAllNotesOnStudent', $note);
 
-        $student = User::findOrFail($student_id);
 
         return response()->json(['student' => $student, 'notes_pagination' => $notes]);
     }
 
     public function getAllNotesOfCounselor($counselor_id)
     {
+        $counselor = User::findOrFail($counselor_id);
+
+        // Check if id supplied is for a counselor user
+        if(!$counselor->isCounselor())
+        {
+            return response()->json(['Error' => 'User for ID '. $counselor_id .' is not counselor'], 404);
+        } 
+
         $notes = Note::where('counselor_id', $counselor_id)->orderBy('created_at', 'DESC')->cursorPaginate(15);
             
         $notes->load('student');
@@ -52,20 +65,29 @@ class NoteController extends Controller
         foreach($notes as $note)
             $this->authorize('getAllNotesOfCounselor', $note);
 
-        $counselor = User::findOrFail($counselor_id);
 
         return response()->json(['counselor' => $counselor, 'notes_pagination' => $notes]);
     }
 
     public function getNotesOfCounselorOnStudent($counselor_id, $student_id)
     {
+        $student = User::findOrFail($student_id);
+        $counselor = User::findOrFail($counselor_id);
+
+        // Check if id supplied is for a counselor user and second id is for a student user
+        if(!$counselor->isCounselor())
+        {
+            return response()->json(['Error' => 'User for ID '. $counselor_id .' is not counselor'], 404);
+        } else if(!$student->isStudent())
+        {
+            return response()->json(['Error' => 'User for ID '. $student_id .' is not student'], 404);
+        }
+
         $notes = Note::where('student_id', $student_id)->where('counselor_id', $counselor_id)->orderBy('updated_at', 'DESC')->cursorPaginate(15);
 
         foreach($notes as $note)
             $this->authorize('getNotesOfCounselorOnStudent', $note);
 
-        $student = User::findOrFail($student_id);
-        $counselor = User::findOrFail($counselor_id);
 
         return response()->json(['student' => $student, 'counselor' => $counselor, 'notes_pagination' => $notes]);
     }

@@ -22,16 +22,16 @@ class UserPolicy
     public function show(User $currentUser, User $user)
     {
         // dd($currentUser);
-        return $currentUser->id === $user->id || $currentUser->checkRole(1);
+        return $currentUser->id === $user->id || $currentUser->isAdmin();
     }
 
     public function update(User $currentUser, User $user)
     {
-        return $currentUser->id === $user->id || $currentUser->checkRole(1);
+        return $currentUser->id === $user->id || $currentUser->isAdmin();
     }
     
     public function delete(User $currentUser, User $user)
     {
-        return $currentUser->id === $user->id || $currentUser->checkRole(1);
+        return $currentUser->id === $user->id || $currentUser->isAdmin();
     }
 }

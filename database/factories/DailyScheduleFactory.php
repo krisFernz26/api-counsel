@@ -20,7 +20,7 @@ class DailyScheduleFactory extends Factory
         return [
            'counselor_schedule_id' => CounselorSchedule::all()->random()->id,
            'date' => $this->faker->boolean(50) ? $this->faker->date('Y-m-d') : null,
-           'day' => $this->faker->dayOfMonth(),
+           'day' => $this->faker->dayOfWeek(),
            'start_time' => $this->faker->time(),
            'end_time' => $this->faker->time(), 
         ];

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AppointmentStatus;
 use Illuminate\Http\Request;
 
 class AppointmentStatusController extends Controller
@@ -13,28 +14,9 @@ class AppointmentStatusController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+       $statuses = AppointmentStatus::orderBy('id', 'ASC')->get();
+       
+       return response()->json($statuses, 200);
     }
 
     /**
@@ -45,18 +27,9 @@ class AppointmentStatusController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+       $status = AppointmentStatus::findOrFail($id);
+       
+       return response()->json($status, 200);
     }
 
     /**
@@ -68,7 +41,16 @@ class AppointmentStatusController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+       $status = AppointmentStatus::findOrFail($id);
+       
+       $this->authorize('update', $status);
+
+       $status->update([
+        'title' => $request->title ?? $status->title,
+        'description' => $request->description ?? $status->description,
+       ]);
+
+       return response()->json(['message' => 'Status updated.', 'status' => $status]);
     }
 
     /**
@@ -79,6 +61,12 @@ class AppointmentStatusController extends Controller
      */
     public function destroy($id)
     {
-        //
+       $status = AppointmentStatus::findOrFail($id);
+       
+       $this->authorize('update', $status);
+
+       $status->delete();
+
+       return response()->json('Status deleted.');
     }
 }

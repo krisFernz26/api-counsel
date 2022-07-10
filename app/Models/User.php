@@ -160,24 +160,4 @@ class User extends Authenticatable implements HasMedia
                 break;
         }
     }
-
-    /**
-     * Get all of the appointments for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    // public function studentAppointments(): HasMany
-    // {
-    //     return $this->hasMany(Appointment::class, 'student_id', 'id');
-    // }
-
-    /**
-     * Get all of the counselorAppointments for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    // public function counselorAppointments(): HasMany
-    // {
-    //     return $this->hasMany(Appointment::class, 'counselor_id', 'id');
-    // }
 }

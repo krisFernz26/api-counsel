@@ -23,7 +23,7 @@ class DailySchedule extends Model
     ];
 
     /**
-     * Get the counselorSchedule that owns the DailySchedule
+     * Get the counselor that owns the DailySchedule
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

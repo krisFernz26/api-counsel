@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CounselorSchedule;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -57,15 +56,8 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        if($user->role_id == 3)
-        {
-            $schedule = new CounselorSchedule;
-            $schedule->counselor_id = $user->id;
-            $schedule->save();
-        }
-
         // Spatie Media Library
-        if($request->hasFile('attachment')) {
+        if ($request->hasFile('attachment')) {
             $user->addMediaFromRequest('attachment')->toMediaCollection('profile_pic');
         }
 
@@ -112,7 +104,7 @@ class UserController extends Controller
         $user->update($request->all());
 
         // Spatie Media Library
-        if($request->hasFile('attachment')) {
+        if ($request->hasFile('attachment')) {
             $user->addMediaFromRequest('attachment')->toMediaCollection('profile_pic');
         }
 

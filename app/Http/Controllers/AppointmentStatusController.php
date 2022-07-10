@@ -63,7 +63,7 @@ class AppointmentStatusController extends Controller
     {
        $status = AppointmentStatus::findOrFail($id);
        
-       $this->authorize('update', $status);
+       $this->authorize('delete', $status);
 
        $status->delete();
 

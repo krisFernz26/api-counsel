@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Note;
 use App\Models\User;
+use App\Rules\Student;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -102,16 +103,10 @@ class NoteController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'student_id' => 'required',
+            'student_id' => ['required', new Student],
             'subject' => 'nullable',
             'body' => 'required'
         ]);
-
-        $student = User::findOrFail($request->student_id);
-        if(!$student->isStudent())
-        {
-            return response()->json(['message' => 'User with ID '.$request->student_id.' is not a student!'], 500);
-        }
 
         $note = new Note([
             'student_id' => $request->student_id,

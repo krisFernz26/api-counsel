@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Appointment;
 use App\Models\User;
+use App\Rules\Student;
 use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
@@ -49,18 +50,12 @@ class AppointmentController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'student_id' => 'required',
+            'student_id' => ['required', new Student],
             'link' => 'required',
             'date' => 'required|date_format:Y-m-d',
             'start_time' => 'required|date_format:H:i',
             'end_time'=> 'nullable|date_format:H:i'
         ]);
-
-        $student = User::findOrFail($request->student_id);
-        if(!$student->isStudent())
-        {
-            return response()->json(['message' => 'User with ID '.$request->student_id.' is not a student!'], 500);
-        }
 
         $appointment = new Appointment([
             'appointment_status_id' => 1,

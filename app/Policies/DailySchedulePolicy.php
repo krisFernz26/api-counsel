@@ -18,10 +18,32 @@ class DailySchedulePolicy
             || $user->isStudent();
     }
 
+    public function getAllDailySchedulesOfCounselor(User $user, DailySchedule $dailySchedule)
+    {
+        return $user->isAdmin()
+            || $user->isInstitution()
+            || $user->isCounselor()
+            || $user->isStudent();
+    }
+
+    public function update(User $user, DailySchedule $dailySchedule)
+    {
+        return $user->isAdmin()
+            || ($user->isInstitution() && $dailySchedule->counselor->institution_id == $user->id)
+            || ($user->isCounselor() && $dailySchedule->counselor_id == $user->id);
+    }
+
     public function store(User $user, DailySchedule $dailySchedule)
     {
         return $user->isAdmin()
             || ($user->isInstitution() && $dailySchedule->counselor->institution_id == $user->id)
-            || $user->isCounselor();
+            || ($user->isCounselor() && $dailySchedule->counselor_id == $user->id);
+    }
+
+    public function delete(User $user, DailySchedule $dailySchedule)
+    {
+        return $user->isAdmin()
+            || ($user->isInstitution() && $dailySchedule->counselor->institution_id == $user->id)
+            || ($user->isCounselor() && $dailySchedule->counselor_id == $user->id);
     }
 }

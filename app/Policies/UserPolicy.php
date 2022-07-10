@@ -11,7 +11,6 @@ class UserPolicy
 
     public function show(User $currentUser, User $user)
     {
-        // dd($currentUser);
         return $currentUser->id === $user->id || $currentUser->isAdmin();
     }
 

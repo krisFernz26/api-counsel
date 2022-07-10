@@ -59,7 +59,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('notes/{id}', [NoteController::class, 'destroy']);
     Route::get('notes/students/{student_id}', [NoteController::class, 'getAllNotesOnStudent']);
     Route::get('notes/counselors/{counselor_id}', [NoteController::class, 'getAllNotesOfCounselor']);
-    Route::get('notes/counselors/{counselor_id}/student/{student_id}', [NoteController::class, 'getNotesOfCounselorOnStudent']);
+    Route::get('notes/counselors/{counselor_id}/students/{student_id}', [NoteController::class, 'getNotesOfCounselorOnStudent']);
 
     Route::resource('appointments', AppointmentController::class, [
         'except' => [

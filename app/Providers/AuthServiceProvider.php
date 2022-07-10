@@ -4,13 +4,13 @@ namespace App\Providers;
 
 use App\Models\Appointment;
 use App\Models\AppointmentStatus;
-use App\Models\CounselorSchedule;
+use App\Models\DailySchedule;
 use App\Models\Institution;
 use App\Models\Note;
 use App\Models\User;
 use App\Policies\AppointmentPolicy;
 use App\Policies\AppointmentStatusPolicy;
-use App\Policies\CounselorSchedulePolicy;
+use App\Policies\DailySchedulePolicy;
 use App\Policies\InstitutionPolicy;
 use App\Policies\NotePolicy;
 use App\Policies\UserPolicy;
@@ -29,7 +29,7 @@ class AuthServiceProvider extends ServiceProvider
         Note::class => NotePolicy::class,
         Appointment::class => AppointmentPolicy::class,
         AppointmentStatus::class => AppointmentStatusPolicy::class,
-        CounselorSchedule::class => CounselorSchedulePolicy::class
+        DailySchedule::class => DailySchedulePolicy::class
     ];
 
     /**

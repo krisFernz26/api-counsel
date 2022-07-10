@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DailySchedule;
 use App\Models\User;
+use App\Rules\Counselor;
 use Illuminate\Http\Request;
 
 class DailyScheduleController extends Controller
@@ -40,6 +41,7 @@ class DailyScheduleController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'counselor_id' => ['required', new Counselor],
             'date' => ['nullable', 'date_format:Y-m-d', 'after_or_equal:tomorrow'],
             'day' => 'required',
             'start_time' => ['required', 'date_format:H:i'],

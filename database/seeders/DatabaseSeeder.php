@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory(50)->create();
         \App\Models\Note::factory(60)->create();
         \App\Models\Appointment::factory(20)->create();
-        \App\Models\CounselorSchedule::factory(100)->create();
-        \App\Models\DailySchedule::factory(100)->create();
+        \App\Models\CounselorSchedule::factory(50)->create();
+        \App\Models\DailySchedule::factory(50)->create();
     }
 }

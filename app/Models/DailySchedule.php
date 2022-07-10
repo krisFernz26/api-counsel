@@ -10,12 +10,12 @@ class DailySchedule extends Model
 {
     use HasFactory;
 
-    protected $with = ['counselorSchedule'];
+    protected $with = ['counselor'];
 
     public $timestamps = false;
 
     protected $fillable = [
-        'counselor_schedule_id',
+        'counselor_id',
         'date',
         'day',
         'start_time',
@@ -27,8 +27,8 @@ class DailySchedule extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function counselorSchedule(): BelongsTo
+    public function counselor(): BelongsTo
     {
-        return $this->belongsTo(CounselorSchedule::class);
+        return $this->belongsTo(User::class, 'counselor_id', 'id');
     }
 }

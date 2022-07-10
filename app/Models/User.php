@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -80,7 +78,7 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->role_id == 1;
     }
-    
+
     /**
      * Check if User is an institution
      * 
@@ -90,7 +88,7 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->role_id == 2;
     }
-    
+
     /**
      * Check if User is a counselor
      * 
@@ -100,7 +98,7 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->role_id == 3;
     }
-    
+
     /**
      * Check if User is a student
      * 
@@ -127,9 +125,8 @@ class User extends Authenticatable implements HasMedia
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function notes(): HasMany
-    {   
-        switch($this->role_id)
-        {
+    {
+        switch ($this->role_id) {
             case 3:
                 return $this->hasMany(Note::class, 'counselor_id', 'id');
                 break;
@@ -149,8 +146,7 @@ class User extends Authenticatable implements HasMedia
      */
     public function appointments(): HasMany
     {
-        switch($this->role_id)
-        {
+        switch ($this->role_id) {
             case 3:
                 return $this->hasMany(Appointment::class, 'counselor_id', 'id');
                 break;
@@ -164,23 +160,12 @@ class User extends Authenticatable implements HasMedia
     }
 
     /**
-     * Get the counselorSchedule associated with the Counselor
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function counselorSchedule(): HasOne
-    {
-        return $this->hasOne(CounselorSchedule::class);
-    }
-
-    /**
      * Get all of the dailySchedules for the User
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function dailySchedules(): HasManyThrough
+    public function schedules(): HasMany
     {
-        return $this->hasManyThrough(DailySchedule::class, CounselorSchedule::class);
+        return $this->hasMany(DailySchedule::class);
     }
-
 }

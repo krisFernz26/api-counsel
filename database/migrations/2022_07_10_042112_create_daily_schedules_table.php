@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('daily_schedules', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('counselor_schedule_id');
-            $table->foreign('counselor_schedule_id')->references('id')->on('counselor_schedules')->onDelete('cascade')->onUpdate('cascade');
+            $table->unsignedBigInteger('counselor_id');
+            $table->foreign('counselor_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->date('date')->nullable(); // only fill in if specific date
             $table->string('day');
             $table->time('start_time');

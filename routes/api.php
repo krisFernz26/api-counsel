@@ -82,10 +82,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('statuses/{id}', [AppointmentStatusController::class, 'update']);
     Route::delete('statuses/{id}', [AppointmentStatusController::class, 'destroy']);
 
+    // TODO: Create routes and modify controller for DailySchedule
     Route::get('schedules/days', [DailyScheduleController::class, 'index']);
+    Route::get('schedules/days/{id}', [DailyScheduleController::class, 'show']);
+    Route::get('users/{counselor_id}/schedules/daily', [DailyScheduleController::class, 'getAllDailySchedulesOfCounselor']);
+    Route::post('schedules/days', [DailyScheduleController::class, 'store']);
+    Route::put('schedules/days/{id}', [DailyScheduleController::class, 'update']);
+    Route::delete('schedules/days/{id}', [DailyScheduleController::class, 'destroy']);
+
     Route::resource('schedules', CounselorScheduleController::class);
     Route::get('users/{counselor_id}/schedules', [CounselorScheduleController::class, 'getScheduleOfCounselor']);
-    // TODO: Create routes and modify controller for DailySchedule
 
     Route::post('logout', [AuthController::class, 'logout']);
 });

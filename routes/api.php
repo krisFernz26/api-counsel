@@ -57,9 +57,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('notes/{id}', [NoteController::class, 'update']);
     Route::put('notes/{id}/restore', [NoteController::class, 'restore']);
     Route::delete('notes/{id}', [NoteController::class, 'destroy']);
-    Route::get('notes/student/{student_id}', [NoteController::class, 'getAllNotesOnStudent']);
-    Route::get('notes/counselor/{counselor_id}', [NoteController::class, 'getAllNotesOfCounselor']);
-    Route::get('notes/counselor/{counselor_id}/student/{student_id}', [NoteController::class, 'getNotesOfCounselorOnStudent']);
+    Route::get('notes/students/{student_id}', [NoteController::class, 'getAllNotesOnStudent']);
+    Route::get('notes/counselors/{counselor_id}', [NoteController::class, 'getAllNotesOfCounselor']);
+    Route::get('notes/counselors/{counselor_id}/student/{student_id}', [NoteController::class, 'getNotesOfCounselorOnStudent']);
 
     Route::resource('appointments', AppointmentController::class, [
         'except' => [
@@ -81,10 +81,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('statuses/{id}', [AppointmentStatusController::class, 'update']);
     Route::delete('statuses/{id}', [AppointmentStatusController::class, 'destroy']);
 
-    // TODO: Create routes and modify controller for DailySchedule
+    // TODO: Test these routes
     Route::get('schedules', [DailyScheduleController::class, 'index']);
     Route::get('schedules/{id}', [DailyScheduleController::class, 'show']);
-    Route::get('users/{counselor_id}/schedules', [DailyScheduleController::class, 'getAllDailySchedulesOfCounselor']);
+    Route::get('counselors/{counselor_id}/schedules', [DailyScheduleController::class, 'getAllDailySchedulesOfCounselor']);
     Route::post('schedules', [DailyScheduleController::class, 'store']);
     Route::put('schedules/{id}', [DailyScheduleController::class, 'update']);
     Route::delete('schedules/{id}', [DailyScheduleController::class, 'destroy']);

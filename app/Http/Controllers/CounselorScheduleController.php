@@ -15,7 +15,7 @@ class CounselorScheduleController extends Controller
      */
     public function index()
     {
-        $schedules = CounselorSchedule::all()->cursorPaginate(15);
+        $schedules = CounselorSchedule::orderBy('id', 'DESC')->cursorPaginate(15);
 
         foreach($schedules as $schedule)
             $this->authorize('index', $schedule);

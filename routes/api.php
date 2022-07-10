@@ -82,6 +82,7 @@ Route::middleware(['auth:sanctum'])->group (function () {
     Route::delete('statuses/{id}', [AppointmentStatusController::class, 'destroy']);
 
     Route::resource('schedules', CounselorScheduleController::class);
+    Route::get('users/{counselor_id}/schedules', [CounselorScheduleController::class, 'getScheduleOfCounselor']);
     // TODO: Create routes and modify controller for DailySchedule
 
     Route::post('logout', [AuthController::class, 'logout']);

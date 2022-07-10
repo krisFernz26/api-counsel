@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CounselorSchedule;
+use App\Rules\Counselor;
 use Illuminate\Http\Request;
 
 class CounselorScheduleController extends Controller
@@ -13,28 +15,27 @@ class CounselorScheduleController extends Controller
      */
     public function index()
     {
-        //
+        $schedules = CounselorSchedule::all()->cursorPaginate(15);
+
+        foreach($schedules as $schedule)
+            $this->authorize('index', $schedule);
+
+        return response()->json($schedules, 200);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the resource related to counselor.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function getScheduleOfCounselor($counselor_id)
     {
-        //
-    }
+        $schedules = CounselorSchedule::where('counselor_id', $counselor_id)->get()->cursorPaginate(15);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        foreach($schedules as $schedule)
+            $this->authorize('index', $schedule);
+        
+        return response()->json($schedules, 200);
     }
 
     /**
@@ -45,30 +46,11 @@ class CounselorScheduleController extends Controller
      */
     public function show($id)
     {
-        //
-    }
+        $schedule = CounselorSchedule::findOrFail($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+        $this->authorize('show', $schedule);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        return response()->json($schedule, 200);
     }
 
     /**
@@ -79,6 +61,10 @@ class CounselorScheduleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $schedule = CounselorSchedule::findOrFail($id);
+
+        $this->authorize('delete', $schedule);
+
+        return response()->json(['message' => 'Schedule deleted.', 'schedule' => $schedule], 200);
     }
 }

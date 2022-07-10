@@ -17,6 +17,10 @@ class CounselorSchedule extends Model
         'counselor_id'
     ];
 
+    protected $hidden = [
+        'counselor_id'
+    ];
+
     /**
      * Get the counselor that owns the CounselorSchedule
      *

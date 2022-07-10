@@ -8,6 +8,7 @@ use App\Http\Controllers\NoteController;
 use App\Http\Controllers\CounselorScheduleController;
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\AppointmentStatusController;
+use App\Http\Controllers\DailyScheduleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,16 +34,16 @@ Route::resource('statuses', AppointmentStatusController::class, [
     ]
 ]);
 
-Route::middleware(['auth:sanctum'])->group (function () {
+Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('users/{id}', [UserController::class, 'update']);
-    
+
     Route::resource('users', UserController::class, ['except' => ['store', 'update']]);
 
     Route::resource('institutions', InstitutionController::class, [
         'except' => [
-            'index', 
-            'show', 
-            'update', 
+            'index',
+            'show',
+            'update',
             'approve'
         ]
     ]);
@@ -50,7 +51,7 @@ Route::middleware(['auth:sanctum'])->group (function () {
     Route::get('institutions/{id}', [InstitutionController::class, 'show']);
     Route::post('institutions/{id}', [InstitutionController::class, 'update']);
     Route::put('institutions/{id}/approve', [InstitutionController::class, 'approve']);
-    
+
     Route::get('notes', [NoteController::class, 'index']);
     Route::post('notes', [NoteController::class, 'store']);
     Route::get('notes/{id}', [NoteController::class, 'show']);
@@ -60,15 +61,15 @@ Route::middleware(['auth:sanctum'])->group (function () {
     Route::get('notes/student/{student_id}', [NoteController::class, 'getAllNotesOnStudent']);
     Route::get('notes/counselor/{counselor_id}', [NoteController::class, 'getAllNotesOfCounselor']);
     Route::get('notes/counselor/{counselor_id}/student/{student_id}', [NoteController::class, 'getNotesOfCounselorOnStudent']);
-    
+
     Route::resource('appointments', AppointmentController::class, [
         'except' => [
-            'getAllAppointmentsOfUser', 
-            'getAllAppointmentsOfStudent', 
-            'getAllAppointmentsOfCounselor', 
-            'restore', 
-            'start', 
-            'complete', 
+            'getAllAppointmentsOfUser',
+            'getAllAppointmentsOfStudent',
+            'getAllAppointmentsOfCounselor',
+            'restore',
+            'start',
+            'complete',
             'cancel'
         ]
     ]);
@@ -77,10 +78,11 @@ Route::middleware(['auth:sanctum'])->group (function () {
     Route::put('appointments/{id}/start', [AppointmentController::class, 'start']);
     Route::put('appointments/{id}/complete', [AppointmentController::class, 'complete']);
     Route::put('appointments/{id}/cancel', [AppointmentController::class, 'cancel']);
-    
+
     Route::put('statuses/{id}', [AppointmentStatusController::class, 'update']);
     Route::delete('statuses/{id}', [AppointmentStatusController::class, 'destroy']);
 
+    Route::get('schedules/days', [DailyScheduleController::class, 'index']);
     Route::resource('schedules', CounselorScheduleController::class);
     Route::get('users/{counselor_id}/schedules', [CounselorScheduleController::class, 'getScheduleOfCounselor']);
     // TODO: Create routes and modify controller for DailySchedule

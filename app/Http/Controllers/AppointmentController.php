@@ -82,7 +82,11 @@ class AppointmentController extends Controller
      */
     public function show($id)
     {
-        
+       $appointment = Appointment::findOrFail($id);
+       
+       $this->authorize('show', $appointment);
+
+       return response()->json($appointment, 200);
     }
 
     /**
@@ -94,7 +98,18 @@ class AppointmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+       $appointment = Appointment::findOrFail($id);
+       
+       $this->authorize('update', $appointment);
+
+       $appointment->update([
+            'link' => $request->link ?? $appointment->link,
+            'date' => $request->date ?? $appointment->date,
+            'start_time' => $request->start_time ?? $appointment->start_time,
+            'end_time' => $request->end_time ?? $appointment->end_time
+       ]);
+
+       return response()->json($appointment, 201);
     }
 
     /**
@@ -105,6 +120,86 @@ class AppointmentController extends Controller
      */
     public function destroy($id)
     {
-        //
+       $appointment = Appointment::findOrFail($id);
+       
+       $this->authorize('delete', $appointment);
+
+       $appointment->delete();
+
+       return response()->json(['message' => 'Appointment deleted.'], 200);
+    }
+
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+       $appointment = Appointment::withTrashed()->findOrFail($id);
+       
+       $this->authorize('restore', $appointment);
+
+       $appointment->restore();
+
+       return response()->json(['message' => 'Appointment restored.', 'appointment' => $appointment], 200);
+    }
+
+    /**
+     * Update the status of the specified resource from storage to "In progress".
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function start($id)
+    {
+       $appointment = Appointment::findOrFail($id);
+       
+       $this->authorize('start', $appointment);
+
+       $appointment->update([
+            'appointment_status_id' => 2,
+       ]);
+
+       return response()->json(['message' => 'Appointment started.', 'appointment' => $appointment], 200);
+    }
+
+    /**
+     * Update the status of the specified resource from storage to "Done".
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function complete($id)
+    {
+       $appointment = Appointment::findOrFail($id);
+       
+       $this->authorize('complete', $appointment);
+
+       $appointment->update([
+            'appointment_status_id' => 3,
+       ]);
+
+       return response()->json(['message' => 'Appointment completed.', 'appointment' => $appointment], 200);
+    }
+
+    /**
+     * Update the status of the specified resource from storage to "Done".
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function cancel($id)
+    {
+       $appointment = Appointment::findOrFail($id);
+       
+       $this->authorize('cancel', $appointment);
+
+       $appointment->update([
+            'appointment_status_id' => 4,
+       ]);
+
+       return response()->json(['message' => 'Appointment cancelled.', 'appointment' => $appointment], 200);
     }
 }

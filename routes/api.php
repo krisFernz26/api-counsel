@@ -32,7 +32,14 @@ Route::middleware(['auth:sanctum'])->group (function () {
 
     Route::resource('users', UserController::class, ['except' => ['store', 'update']]);
 
-    Route::resource('institutions', InstitutionController::class, ['except' => ['index', 'show', 'update', 'approve']]);
+    Route::resource('institutions', InstitutionController::class, [
+        'except' => [
+            'index', 
+            'show', 
+            'update', 
+            'approve'
+            ]
+        ]);
     Route::get('/institutions', [InstitutionController::class, 'index']);
     Route::get('/institutions/{id}', [InstitutionController::class, 'show']);
     Route::post('/institutions/{id}', [InstitutionController::class, 'update']);
@@ -48,8 +55,22 @@ Route::middleware(['auth:sanctum'])->group (function () {
     Route::get('notes/counselor/{counselor_id}', [NoteController::class, 'getAllNotesOfCounselor']);
     Route::get('notes/counselor/{counselor_id}/student/{student_id}', [NoteController::class, 'getNotesOfCounselorOnStudent']);
 
-    Route::resource('appointments', AppointmentController::class, ['except' => ['getAllAppointmentsOfUser', 'getAllAppointmentsOfStudent', 'getAllAppointmentsOfCounselor']]);
+    Route::resource('appointments', AppointmentController::class, [
+        'except' => [
+            'getAllAppointmentsOfUser', 
+            'getAllAppointmentsOfStudent', 
+            'getAllAppointmentsOfCounselor', 
+            'restore', 
+            'start', 
+            'complete', 
+            'cancel'
+            ]
+    ]);
     Route::get('users/{id}/appointments', [AppointmentController::class, 'getAllAppointmentsOfUser']);
+    Route::put('appointments/{id}/restore', [AppointmentController::class, 'restore']);
+    Route::put('appointments/{id}/start', [AppointmentController::class, 'start']);
+    Route::put('appointments/{id}/complete', [AppointmentController::class, 'complete']);
+    Route::put('appointments/{id}/cancel', [AppointmentController::class, 'cancel']);
 
     Route::resource('schedules', CounselorScheduleController::class);
     Route::resource('statuses', AppointmentStatusController::class);

@@ -59,6 +59,13 @@ class AppointmentPolicy
             || ($user->isCounselor() && $appointment->counselor_id == $user->id); 
     }
 
+    public function restore(User $user, Appointment $appointment)
+    {
+        return $user->isAdmin()
+            || ($user->isInstitution() && $appointment->counselor->institution_id == $user->institution_id) 
+            || ($user->isCounselor() && $appointment->counselor_id == $user->id); 
+    }
+
     public function start(User $user, Appointment $appointment)
     {
         return $user->isAdmin()

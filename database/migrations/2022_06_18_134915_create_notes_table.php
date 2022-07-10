@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('notes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('student_id');
-            $table->foreign('student_id')->references('id')->on('users')->onDelete('cascade')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('student_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade')->onDelete('cascade')->onUpdate('cascade');
             $table->unsignedBigInteger('counselor_id');
             $table->foreign('counselor_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
             $table->text('subject')->nullable();

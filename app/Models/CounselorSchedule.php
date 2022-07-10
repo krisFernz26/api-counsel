@@ -13,6 +13,8 @@ class CounselorSchedule extends Model
 
     protected $with = ['counselor:id,institution_id,last_name,first_name', 'dailySchedules'];
 
+    public $timestamps = false;
+
     protected $fillable = [
         'counselor_id'
     ];

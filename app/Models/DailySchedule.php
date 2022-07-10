@@ -12,6 +12,8 @@ class DailySchedule extends Model
 
     protected $with = ['counselorSchedule'];
 
+    public $timestamps = false;
+
     protected $fillable = [
         'counselor_schedule_id',
         'date',

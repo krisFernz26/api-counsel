@@ -37,7 +37,7 @@ class Appointment extends Model
      */
     public function currentStatus()
     {
-        return $this->belongsTo(AppointmentStatus::class);
+        return $this->belongsTo(AppointmentStatus::class, 'appointment_status_id', 'id');
     }
 
     /**

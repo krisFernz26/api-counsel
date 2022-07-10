@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('counselor_schedules', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->unsignedBigInteger('counselor_id');
+            $table->foreign('counselor_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

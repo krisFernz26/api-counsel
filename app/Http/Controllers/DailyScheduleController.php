@@ -49,6 +49,7 @@ class DailyScheduleController extends Controller
         ]);
 
         $dailySchedule = new DailySchedule([
+            'counselor_id' => $request->counselor_id,
             'date' => $request->date,
             'day' => $request->day,
             'start_time' => $request->start_time,

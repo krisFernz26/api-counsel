@@ -21,6 +21,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/', function () {
+    return 'API for counsel';
+});
 Route::post('/token/generate', [TokenController::class, 'generate']);
 
 Route::post('/register', [UserController::class, 'store']);

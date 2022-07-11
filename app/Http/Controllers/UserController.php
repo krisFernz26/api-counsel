@@ -32,7 +32,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'institution_id' => 'required',
+            'institution_id' => 'required|exists:institutions,id',
             'username' => 'required|unique:users',
             'birthdate' => 'nullable',
             'address' => 'nullable',
@@ -41,7 +41,7 @@ class UserController extends Controller
             'email' => 'required|unique:users|email',
             'password' => 'required',
             'attachment' => 'nullable',
-            'role_id' => 'required',
+            'role_id' => 'required|exists:roles,id',
         ]);
 
         $user = User::create([

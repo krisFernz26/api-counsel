@@ -34,7 +34,7 @@ class UserController extends Controller
         $data = $request->validate([
             'institution_id' => 'required|exists:institutions,id',
             'username' => 'required|unique:users',
-            'birthdate' => 'nullable',
+            'birthdate' => 'nullable|date_format:Y-m-d|before:today',
             'address' => 'nullable',
             'first_name' => 'required',
             'last_name' => 'required',
@@ -48,7 +48,7 @@ class UserController extends Controller
             'role_id' => $request->role_id,
             'institution_id' => $request->institution_id,
             'username' => strip_tags($request->username),
-            'birthdate' => Carbon::now() ?? null,
+            'birthdate' => $request->birthdate ?? null,
             'address' => strip_tags($request->address) ?? null,
             'first_name' => strip_tags($request->first_name),
             'last_name' => strip_tags($request->last_name),

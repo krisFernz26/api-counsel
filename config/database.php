@@ -10,6 +10,13 @@ $username = $url["user"] ?? null;
 $password = $url["pass"] ?? null;
 $database = substr($url["path"], 1);
 
+$postgresUrl = parse_url(getenv("postgres://zhpwqupmcakqsg:346140ce277bbc7aab3f94d0556d8802a27a07de88b82638c0531a4adee5dfb0@ec2-3-219-229-143.compute-1.amazonaws.com:5432/d1lnf6rs0ltov5"));
+$postgresHost = $postgresUrl['host'];
+$postgresPort = $postgresUrl['port'];
+$postgresUser = $postgresUrl['user'];
+$postgresPass = $postgresUrl['pass'];
+$postgresDB = ltrim($postgresUrl['path'], "/");
+
 return [
 
     /*
@@ -23,7 +30,7 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'pgsql'),
 
     /*
     |--------------------------------------------------------------------------
@@ -86,17 +93,17 @@ return [
 
         'pgsql' => [
             'driver' => 'pgsql',
-            'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
+            'url' => $postgresUrl,
+            'host' => $postgresHost,
+            'port' => $postgresPort,
+            'database' => $postgresDB,
+            'username' => $postgresUser,
+            'password' => $postgresPass,
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
             'search_path' => 'public',
-            'sslmode' => 'prefer',
+            'sslmode' => 'required',
         ],
 
         'sqlsrv' => [

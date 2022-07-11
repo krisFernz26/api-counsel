@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Str;
 
-$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+$url = parse_url("mysql://b00859cf1fe0b8:02a6c7d2@us-cdbr-east-06.cleardb.net/heroku_7961864425ccd72?reconnect=true");
 
 $host = $url["host"] ?? null;
 $port = $url["port"] ?? null;
@@ -10,7 +10,7 @@ $username = $url["user"] ?? null;
 $password = $url["pass"] ?? null;
 $database = substr($url["path"], 1);
 
-$postgresUrl = parse_url(getenv("postgres://zhpwqupmcakqsg:346140ce277bbc7aab3f94d0556d8802a27a07de88b82638c0531a4adee5dfb0@ec2-3-219-229-143.compute-1.amazonaws.com:5432/d1lnf6rs0ltov5"));
+$postgresUrl = parse_url("postgres://zhpwqupmcakqsg:346140ce277bbc7aab3f94d0556d8802a27a07de88b82638c0531a4adee5dfb0@ec2-3-219-229-143.compute-1.amazonaws.com:5432/d1lnf6rs0ltov5");
 $postgresHost = $postgresUrl['host'];
 $postgresPort = $postgresUrl['port'];
 $postgresUser = $postgresUrl['user'];

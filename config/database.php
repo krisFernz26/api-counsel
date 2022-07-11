@@ -2,20 +2,7 @@
 
 use Illuminate\Support\Str;
 
-$url = parse_url(getenv('CLEARDB_DATABASE_URL'));
-
-$host = $url["host"] ?? null;
-$port = $url["port"] ?? null;
-$username = $url["user"] ?? null;
-$password = $url["pass"] ?? null;
-$database = substr($url["path"], 1);
-
 $postgresUrl = parse_url(getenv('HEROKU_POSTGRESQL_TEAL_URL'));
-$postgresHost = $postgresUrl['host'];
-$postgresPort = $postgresUrl['port'];
-$postgresUser = $postgresUrl['user'];
-$postgresPass = $postgresUrl['pass'];
-$postgresDB = ltrim($postgresUrl['path'], "/");
 
 return [
 
@@ -78,29 +65,17 @@ return [
             ]) : [],
         ],
 
-        'mysql-heroku' => [
-            'driver' => 'mysql',
-            'host' => $host,
-            'port' => $port,
-            'database' => $database,
-            'username' => $username,
-            'password' => $password,
-            'charset' => 'utf8mb4',
-            'collation' => 'utf8mb4_unicode_ci',
-            'prefix' => '',
-        ],
-
         'pgsql' => [
             'driver' => 'pgsql',
-            'host' => $postgresHost,
-            'port' => $postgresPort,
-            'database' => $postgresDB,
-            'username' => $postgresUser,
-            'password' => $postgresPass,
+            'host' => $postgresUrl["host"],
+            'port' => $postgresUrl["port"],
+            'database' => ltrim($postgresUrl["path"], "/"),
+            'username' => $postgresUrl["user"],
+            'password' => $postgresUrl["pass"],
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
-            'search_path' => 'public',
+            'schema' => 'public',
             'sslmode' => 'required',
         ],
 

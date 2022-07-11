@@ -18,7 +18,7 @@ class UserController extends Controller
     {
         $users = User::orderBy('created_at', 'DESC')->cursorPaginate(15);
 
-        $users->load(['role:id,name', 'notes', 'counselorAppointments', 'studentAppointments']);
+        $users->load(['role:id,name', 'notes', 'appointments']);
 
         return response()->json($users);
     }
@@ -83,7 +83,7 @@ class UserController extends Controller
 
         $this->authorize('show', [$user]);
 
-        $user->load(['counselorNotes', 'studentNotes', 'counselorAppointments', 'studentAppointments']);
+        $user->load(['notes', 'appointments']);
 
         return response()->json($user);
     }
@@ -101,16 +101,21 @@ class UserController extends Controller
 
         $this->authorize('update', [$user]);
 
-        $user->update($request->all());
+        $user->update([
+            'username' => $request->username ?? $user->username,
+            'birthdate' => $request->birthdate ?? $user->birthdate,
+            'first_name' => $request->first_name ?? $user->first_name,
+            'last_name' => $request->last_name ?? $user->last_name,
+        ]);
 
         // Spatie Media Library
         if ($request->hasFile('attachment')) {
             $user->addMediaFromRequest('attachment')->toMediaCollection('profile_pic');
         }
 
-        $user->load(['counselorNotes', 'studentNotes', 'counselorAppointments', 'studentAppointments']);
+        $user->load(['notes', 'appointments']);
 
-        return response()->json($user);
+        return response()->json(['message' => 'Updated user', 'user' => $user]);
     }
 
     /**

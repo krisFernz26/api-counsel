@@ -38,6 +38,8 @@ class User extends Authenticatable implements HasMedia
      * @var array<int, string>
      */
     protected $hidden = [
+        'institution_id',
+        'role_id',
         'password',
         'remember_token',
     ];

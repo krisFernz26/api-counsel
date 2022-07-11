@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Appointment;
 use App\Models\User;
+use App\Rules\Counselor;
 use App\Rules\Student;
 use Illuminate\Http\Request;
 
@@ -19,9 +20,9 @@ class AppointmentController extends Controller
         // $appointments = Appointment::orderBy('date', 'ASC')->orderBy('start_time', 'ASC')->cursorPaginate(15);
         $appointments = Appointment::orderBy('date', 'DESC')->orderBy('start_time', 'DESC')->cursorPaginate(15);
 
-        foreach($appointments as $appointment)
+        foreach ($appointments as $appointment)
             $this->authorize('index', $appointment);
-        
+
         return response($appointments, 200);
     }
 
@@ -35,9 +36,9 @@ class AppointmentController extends Controller
         // $appointments = Appointment::orderBy('date', 'ASC')->orderBy('start_time', 'ASC')->cursorPaginate(15);
         $appointments = Appointment::where('counselor_id', $id)->orWhere('student_id', $id)->orderBy('date', 'DESC')->orderBy('start_time', 'DESC')->cursorPaginate(15);
 
-        foreach($appointments as $appointment)
+        foreach ($appointments as $appointment)
             $this->authorize('index', $appointment);
-        
+
         return response($appointments, 200);
     }
 
@@ -51,16 +52,17 @@ class AppointmentController extends Controller
     {
         $request->validate([
             'student_id' => ['required', new Student],
+            'counselor_id' => ['required', new Counselor],
             'link' => 'required',
             'date' => 'required|date_format:Y-m-d',
             'start_time' => 'required|date_format:H:i',
-            'end_time'=> 'nullable|date_format:H:i'
+            'end_time' => 'nullable|date_format:H:i'
         ]);
 
         $appointment = new Appointment([
             'appointment_status_id' => 1,
             'student_id' => $request->student_id,
-            'counselor_id' => auth()->user()->id,
+            'counselor_id' => $request->counselor_id,
             'link' => $request->link,
             'date' => $request->date,
             'start_time' => $request->start_time,
@@ -82,11 +84,11 @@ class AppointmentController extends Controller
      */
     public function show($id)
     {
-       $appointment = Appointment::findOrFail($id);
-       
-       $this->authorize('show', $appointment);
+        $appointment = Appointment::findOrFail($id);
 
-       return response()->json($appointment, 200);
+        $this->authorize('show', $appointment);
+
+        return response()->json($appointment, 200);
     }
 
     /**
@@ -98,18 +100,18 @@ class AppointmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-       $appointment = Appointment::findOrFail($id);
-       
-       $this->authorize('update', $appointment);
+        $appointment = Appointment::findOrFail($id);
 
-       $appointment->update([
+        $this->authorize('update', $appointment);
+
+        $appointment->update([
             'link' => $request->link ?? $appointment->link,
             'date' => $request->date ?? $appointment->date,
             'start_time' => $request->start_time ?? $appointment->start_time,
             'end_time' => $request->end_time ?? $appointment->end_time
-       ]);
+        ]);
 
-       return response()->json($appointment, 201);
+        return response()->json($appointment, 201);
     }
 
     /**
@@ -120,13 +122,13 @@ class AppointmentController extends Controller
      */
     public function destroy($id)
     {
-       $appointment = Appointment::findOrFail($id);
-       
-       $this->authorize('delete', $appointment);
+        $appointment = Appointment::findOrFail($id);
 
-       $appointment->delete();
+        $this->authorize('delete', $appointment);
 
-       return response()->json(['message' => 'Appointment deleted.'], 200);
+        $appointment->delete();
+
+        return response()->json(['message' => 'Appointment deleted.'], 200);
     }
 
     /**
@@ -137,13 +139,13 @@ class AppointmentController extends Controller
      */
     public function restore($id)
     {
-       $appointment = Appointment::withTrashed()->findOrFail($id);
-       
-       $this->authorize('restore', $appointment);
+        $appointment = Appointment::withTrashed()->findOrFail($id);
 
-       $appointment->restore();
+        $this->authorize('restore', $appointment);
 
-       return response()->json(['message' => 'Appointment restored.', 'appointment' => $appointment], 200);
+        $appointment->restore();
+
+        return response()->json(['message' => 'Appointment restored.', 'appointment' => $appointment], 200);
     }
 
     /**
@@ -154,15 +156,15 @@ class AppointmentController extends Controller
      */
     public function start($id)
     {
-       $appointment = Appointment::findOrFail($id);
-       
-       $this->authorize('start', $appointment);
+        $appointment = Appointment::findOrFail($id);
 
-       $appointment->update([
+        $this->authorize('start', $appointment);
+
+        $appointment->update([
             'appointment_status_id' => 2,
-       ]);
+        ]);
 
-       return response()->json(['message' => 'Appointment started.', 'appointment' => $appointment], 200);
+        return response()->json(['message' => 'Appointment started.', 'appointment' => $appointment], 200);
     }
 
     /**
@@ -173,15 +175,15 @@ class AppointmentController extends Controller
      */
     public function complete($id)
     {
-       $appointment = Appointment::findOrFail($id);
-       
-       $this->authorize('complete', $appointment);
+        $appointment = Appointment::findOrFail($id);
 
-       $appointment->update([
+        $this->authorize('complete', $appointment);
+
+        $appointment->update([
             'appointment_status_id' => 3,
-       ]);
+        ]);
 
-       return response()->json(['message' => 'Appointment completed.', 'appointment' => $appointment], 200);
+        return response()->json(['message' => 'Appointment completed.', 'appointment' => $appointment], 200);
     }
 
     /**
@@ -192,14 +194,14 @@ class AppointmentController extends Controller
      */
     public function cancel($id)
     {
-       $appointment = Appointment::findOrFail($id);
-       
-       $this->authorize('cancel', $appointment);
+        $appointment = Appointment::findOrFail($id);
 
-       $appointment->update([
+        $this->authorize('cancel', $appointment);
+
+        $appointment->update([
             'appointment_status_id' => 4,
-       ]);
+        ]);
 
-       return response()->json(['message' => 'Appointment cancelled.', 'appointment' => $appointment], 200);
+        return response()->json(['message' => 'Appointment cancelled.', 'appointment' => $appointment], 200);
     }
 }

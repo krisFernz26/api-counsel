@@ -11,7 +11,7 @@ class DailyScheduleController extends Controller
 {
     public function index()
     {
-        $dailySchedules = DailySchedule::orderBy('date', 'ASC')->orderBy('day', 'ASC')->orderBy('start_time', 'ASC')->cursorPaginate(15);
+        $dailySchedules = DailySchedule::orderBy('date', 'ASC')->orderBy('day', 'ASC')->orderBy('start_time', 'ASC')->get();
 
         foreach ($dailySchedules as $dailySchedule)
             $this->authorize('index', $dailySchedule);
@@ -30,7 +30,7 @@ class DailyScheduleController extends Controller
 
     public function getAllDailySchedulesOfCounselor($counselor_id)
     {
-        $dailySchedules = User::findOrFail($counselor_id)->schedules()->cursorPaginate(15);
+        $dailySchedules = User::findOrFail($counselor_id)->schedules()->get();
 
         foreach ($dailySchedules as $dailySchedule)
             $this->authorize('getAllDailySchedulesOfCounselor', $dailySchedule);

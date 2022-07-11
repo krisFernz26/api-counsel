@@ -168,6 +168,6 @@ class User extends Authenticatable implements HasMedia
      */
     public function schedules(): HasMany
     {
-        return $this->hasMany(DailySchedule::class);
+        return $this->hasMany(DailySchedule::class, 'counselor_id', 'id');
     }
 }

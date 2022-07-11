@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Note;
 use App\Models\User;
+use App\Rules\Counselor;
 use App\Rules\Student;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -21,7 +22,7 @@ class NoteController extends Controller
         // dd($user);
         $notes = Note::orderBy('created_at', 'DESC')->cursorPaginate(15);
 
-        foreach($notes as $note)
+        foreach ($notes as $note)
             $this->authorize('index', $note);
 
         $notes->load('counselor', 'student');
@@ -32,18 +33,17 @@ class NoteController extends Controller
     public function getAllNotesOnStudent($student_id)
     {
         $student = User::findOrFail($student_id);
-        
+
         // Check if id supplied is for a student user
-        if(!$student->isStudent())
-        {
-            return response()->json(['Error' => 'User for ID '. $student_id .' is not student'], 404);
+        if (!$student->isStudent()) {
+            return response()->json(['Error' => 'User for ID ' . $student_id . ' is not student'], 404);
         }
 
         $notes = Note::where('student_id', $student_id)->orderBy('created_at', 'DESC')->cursorPaginate(15);
-        
+
         $notes->load('counselor');
-        
-        foreach($notes as $note)
+
+        foreach ($notes as $note)
             $this->authorize('getAllNotesOnStudent', $note);
 
 
@@ -55,16 +55,15 @@ class NoteController extends Controller
         $counselor = User::findOrFail($counselor_id);
 
         // Check if id supplied is for a counselor user
-        if(!$counselor->isCounselor())
-        {
-            return response()->json(['Error' => 'User for ID '. $counselor_id .' is not counselor'], 404);
-        } 
+        if (!$counselor->isCounselor()) {
+            return response()->json(['Error' => 'User for ID ' . $counselor_id . ' is not counselor'], 404);
+        }
 
         $notes = Note::where('counselor_id', $counselor_id)->orderBy('created_at', 'DESC')->cursorPaginate(15);
-            
+
         $notes->load('student');
 
-        foreach($notes as $note)
+        foreach ($notes as $note)
             $this->authorize('getAllNotesOfCounselor', $note);
 
 
@@ -77,17 +76,15 @@ class NoteController extends Controller
         $counselor = User::findOrFail($counselor_id);
 
         // Check if id supplied is for a counselor user and second id is for a student user
-        if(!$counselor->isCounselor())
-        {
-            return response()->json(['Error' => 'User for ID '. $counselor_id .' is not counselor'], 404);
-        } else if(!$student->isStudent())
-        {
-            return response()->json(['Error' => 'User for ID '. $student_id .' is not student'], 404);
+        if (!$counselor->isCounselor()) {
+            return response()->json(['Error' => 'User for ID ' . $counselor_id . ' is not counselor'], 404);
+        } else if (!$student->isStudent()) {
+            return response()->json(['Error' => 'User for ID ' . $student_id . ' is not student'], 404);
         }
 
         $notes = Note::where('student_id', $student_id)->where('counselor_id', $counselor_id)->orderBy('updated_at', 'DESC')->cursorPaginate(15);
 
-        foreach($notes as $note)
+        foreach ($notes as $note)
             $this->authorize('getNotesOfCounselorOnStudent', $note);
 
 
@@ -104,13 +101,14 @@ class NoteController extends Controller
     {
         $data = $request->validate([
             'student_id' => ['required', new Student],
+            'counselor_id' => ['required', new Counselor],
             'subject' => 'nullable',
             'body' => 'required'
         ]);
 
         $note = new Note([
             'student_id' => $request->student_id,
-            'counselor_id' => auth()->user()->id,
+            'counselor_id' => $request->counselor_id,
             'subject' => strip_tags($request->subject) ?? '',
             'body' => strip_tags($request->body)
         ]);
@@ -118,7 +116,7 @@ class NoteController extends Controller
         $this->authorize('store', $note);
 
         $note->save();
-        
+
         $note->load('counselor', 'student');
 
         return response()->json($note);
@@ -155,7 +153,7 @@ class NoteController extends Controller
         $this->authorize('update', $note);
 
         $note->update([
-            'body' => strip_tags($request->body) . ' (Edited on '. Carbon::now()->format('Y-m-d H:i:s') . ')' ?? $note->body
+            'body' => strip_tags($request->body) . ' (Edited on ' . Carbon::now()->format('Y-m-d H:i:s') . ')' ?? $note->body
         ]);
 
         $note->load('counselor', 'student');

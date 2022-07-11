@@ -18,6 +18,14 @@ class DailySchedulePolicy
             || $user->isStudent();
     }
 
+    public function show(User $user, DailySchedule $dailySchedule)
+    {
+        return $user->isAdmin()
+            || $user->isInstitution()
+            || $user->isCounselor()
+            || $user->isStudent();
+    }
+
     public function getAllDailySchedulesOfCounselor(User $user, DailySchedule $dailySchedule)
     {
         return $user->isAdmin()

@@ -95,5 +95,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/schedules/{id}', [DailyScheduleController::class, 'update']);
     Route::delete('/schedules/{id}', [DailyScheduleController::class, 'destroy']);
 
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/logout', [AuthController::class, 'logout']);
 });

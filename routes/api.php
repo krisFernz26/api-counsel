@@ -37,9 +37,10 @@ Route::resource('statuses', AppointmentStatusController::class, [
 ]);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('/users/{id}', [UserController::class, 'update']);
 
-    Route::resource('users', UserController::class, ['except' => ['store', 'update']]);
+    Route::resource('users', UserController::class, ['except' => ['store', 'update', 'getCurrentUser']]);
+    Route::get('/users/current', [UserController::class, 'getCurrentUser']);
+    Route::post('/users/{id}', [UserController::class, 'update']);
 
     Route::resource('institutions', InstitutionController::class, [
         'except' => [

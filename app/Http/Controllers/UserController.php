@@ -88,6 +88,14 @@ class UserController extends Controller
         return response()->json($user);
     }
 
+    public function getCurrentUser()
+    {
+        $user = auth()->user();
+        dd($user);
+
+        return response()->json($user);
+    }
+
     /**
      * Update the specified resource in storage.
      *

@@ -27,6 +27,8 @@ Route::get('/', function () {
 Route::post('/token/generate', [TokenController::class, 'generate']);
 
 Route::post('/register', [UserController::class, 'store']);
+Route::post('/admin/login', [AuthController::class, 'loginAuth']);
+Route::post('/institutions/login', [AuthController::class, 'loginInstitution']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/validate', [AuthController::class, 'validateToken']);
 Route::resource('statuses', AppointmentStatusController::class, [

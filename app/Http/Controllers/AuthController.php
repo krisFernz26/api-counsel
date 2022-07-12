@@ -17,7 +17,61 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        $user = User::where('email', $data['email'])->first();
+        $user = User::where('email', $data['email'])->where('role_id', '<>', 1)->where('role_id', '<>', 2)->first();
+
+        if (!$user || !Hash::check($data['password'], $user->password)) {
+            return response([
+                'msg' => 'incorrect email or password'
+            ], 401);
+        }
+
+        $token = $user->createToken('apiToken')->plainTextToken;
+
+        $user->load('institution');
+
+        $res = [
+            'token' => $token,
+            'user' => $user,
+        ];
+
+        return response($res, 201);
+    }
+
+    public function loginAdmin(Request $request)
+    {
+        $data = $request->validate([
+            'email' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        $user = User::where('email', $data['email'])->where('role_id', 1)->first();
+
+        if (!$user || !Hash::check($data['password'], $user->password)) {
+            return response([
+                'msg' => 'incorrect email or password'
+            ], 401);
+        }
+
+        $token = $user->createToken('apiToken')->plainTextToken;
+
+        $user->load('institution');
+
+        $res = [
+            'token' => $token,
+            'user' => $user,
+        ];
+
+        return response($res, 201);
+    }
+
+    public function loginInstitution(Request $request)
+    {
+        $data = $request->validate([
+            'email' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        $user = User::where('email', $data['email'])->where('role_id', 2)->first();
 
         if (!$user || !Hash::check($data['password'], $user->password)) {
             return response([

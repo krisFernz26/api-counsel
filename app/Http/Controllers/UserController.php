@@ -12,11 +12,18 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::orderBy('created_at', 'DESC')->cursorPaginate(15);
+        $roleId = $request->role_id;
+
+        $users = User::orderBy('created_at', 'DESC')
+            ->when($roleId, function($q, $roleId) {
+                $q->where('role_id', $roleId);
+            })
+            ->get();
 
         $users->load(['role:id,name', 'notes', 'appointments']);
 

@@ -22,6 +22,12 @@ class InstitutionController extends Controller
         return response()->json($institutions);
     }
 
+    public function indexNames()
+    {
+        $institutions = Institution::select('id', 'name')->orderBy('name', 'ASC')->get();
+        return response()->json($institutions);
+    }
+
     /**
      * Store a newly created resource in storage.
      *

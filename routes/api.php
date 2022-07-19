@@ -53,6 +53,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         ]
     ]);
     Route::get('/institutions', [InstitutionController::class, 'index']);
+    Route::get('/institutions/names', [InstitutionController::class, 'indexNames']);
     Route::get('/institutions/{id}', [InstitutionController::class, 'show']);
     Route::post('/institutions/{id}', [InstitutionController::class, 'update']);
     Route::put('/institutions/{id}/approve', [InstitutionController::class, 'approve']);

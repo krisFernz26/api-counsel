@@ -68,14 +68,7 @@ class UserController extends Controller
             $user->addMediaFromRequest('attachment')->toMediaCollection('profile_pic');
         }
 
-        $token = $user->createToken('apiToken')->plainTextToken;
-
-        $res = [
-            'token' => $token,
-            'user' => $user,
-        ];
-
-        return response()->json($res);
+        return response()->json($user);
     }
 
     /**

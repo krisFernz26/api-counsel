@@ -68,7 +68,7 @@ class UserController extends Controller
             $user->addMediaFromRequest('attachment')->toMediaCollection('profile_pic');
         }
 
-        return response()->json($user);
+        return response()->json($user, 201);
     }
 
     /**

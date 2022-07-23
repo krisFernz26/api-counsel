@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             InstitutionTableSeeder::class,
             RoleSeeder::class,
             AppointmentStatusSeeder::class,
+            DefualtAdminSeeder::class
         ]);
         \App\Models\Institution::factory(10)->create();
         \App\Models\User::factory(50)->create();

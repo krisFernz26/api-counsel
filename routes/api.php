@@ -42,7 +42,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::resource('users', UserController::class, ['except' => ['store', 'update', 'getCurrentUser']]);
     Route::get('/user/current', [UserController::class, 'getCurrentUser']);
-    Route::post('/users/{id}', [UserController::class, 'update']);
+    Route::put('/users/{id}', [UserController::class, 'update']);
 
     Route::resource('institutions', InstitutionController::class, [
         'except' => [

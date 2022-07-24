@@ -111,9 +111,11 @@ class UserController extends Controller
 
         $user->update([
             'username' => $request->username ?? $user->username,
+            'email' => $request->email ?? $user->email,
             'birthdate' => $request->birthdate ?? $user->birthdate,
             'first_name' => $request->first_name ?? $user->first_name,
             'last_name' => $request->last_name ?? $user->last_name,
+            'address' => $request->address ?? $user->address
         ]);
 
         // Spatie Media Library

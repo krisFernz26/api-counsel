@@ -15,7 +15,7 @@ class InstitutionController extends Controller
      */
     public function index()
     {
-        $institutions = Institution::orderBy('created_at', 'DESC')->cursorPaginate(15);
+        $institutions = Institution::orderBy('created_at', 'DESC')->get();
         
         $institutions->load('media', 'users');
 

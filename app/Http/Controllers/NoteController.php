@@ -20,7 +20,7 @@ class NoteController extends Controller
     {
         // $user = auth()->user();
         // dd($user);
-        $notes = Note::orderBy('created_at', 'DESC')->cursorPaginate(15);
+        $notes = Note::orderBy('created_at', 'DESC')->get();
 
         foreach ($notes as $note)
             $this->authorize('index', $note);

@@ -18,7 +18,7 @@ class AppointmentController extends Controller
     public function index()
     {
         // $appointments = Appointment::orderBy('date', 'ASC')->orderBy('start_time', 'ASC')->cursorPaginate(15);
-        $appointments = Appointment::orderBy('date', 'DESC')->orderBy('start_time', 'DESC')->cursorPaginate(15);
+        $appointments = Appointment::orderBy('date', 'DESC')->orderBy('start_time', 'DESC')->get();
 
         foreach ($appointments as $appointment)
             $this->authorize('index', $appointment);

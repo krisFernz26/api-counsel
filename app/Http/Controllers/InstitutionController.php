@@ -15,7 +15,7 @@ class InstitutionController extends Controller
      */
     public function index()
     {
-        $institutions = Institution::orderBy('created_at', 'DESC')->get();
+        $institutions = Institution::orderBy('updated_at', 'DESC')->get();
         
         $institutions->load('media', 'users');
 

@@ -119,7 +119,7 @@ class NoteController extends Controller
 
         $note->load('counselor', 'student');
 
-        return response()->json($note);
+        return response()->json($note, 201);
     }
 
     /**

@@ -72,7 +72,7 @@ class InstitutionController extends Controller
 
         $institution->load('users', 'media');
         
-        return response()->json($institution);
+        return response()->json($institution, 201);
     }
 
     /**
